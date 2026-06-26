@@ -280,10 +280,12 @@ const DEF_MS = [
 // ── STATE ─────────────────────────────────────────────────────
 
 // ── CLOUD CONFIG ──────────────────────────────────────────────
-const GH_TOKEN  = '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'; // GitHub PAT con permiso contents:write
 const SAVE_PWD  = 'centrosuizo2026';
 const GH_RAW    = 'https://raw.githubusercontent.com/ETARVIDEOS/CENTROSUIZOGANTT/main/PROYECTO%20WEB/gantt_state.json';
 const GH_API    = 'https://api.github.com/repos/ETARVIDEOS/CENTROSUIZOGANTT/contents/PROYECTO%20WEB/gantt_state.json';
+const GH_TOKEN_KEY = 'gantt_gh_pat';
+
+function getToken(){return localStorage.getItem(GH_TOKEN_KEY)||'';}
 
 // ── STATE ─────────────────────────────────────────────────────
 const SK='gantt_csj_v3';
@@ -297,18 +299,25 @@ function loadS(){try{return JSON.parse(localStorage.getItem(SK))}catch{return nu
 function saveS(){localStorage.setItem(SK,JSON.stringify(state))}
 
 async function saveCloud(){
-  if(GH_TOKEN==='PONER_TOKEN_AQUI'){showToast('⚠️ Token no configurado — ver instrucciones');return;}
+  let token=getToken();
+  if(!token){
+    token=prompt('Token GitHub (ghp_...):\n\nSe guardará en este navegador — solo debes ingresarlo una vez.');
+    if(!token){return;}
+    localStorage.setItem(GH_TOKEN_KEY,token.trim());
+    token=token.trim();
+  }
   const pwd=prompt('Contraseña para guardar:');
   if(!pwd||pwd!==SAVE_PWD){showToast('❌ Contraseña incorrecta');return;}
   const btn=document.getElementById('btn-save');
   btn.disabled=true;showToast('⏳ Guardando en la nube...');
   try{
-    const metaR=await fetch(GH_API,{headers:{'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json'}});
+    const metaR=await fetch(GH_API,{headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json'}});
     const meta=await metaR.json();
+    if(meta.message==='Bad credentials'){localStorage.removeItem(GH_TOKEN_KEY);showToast('❌ Token inválido — se eliminó, intenta de nuevo');btn.disabled=false;return;}
     const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
     const r=await fetch(GH_API,{
       method:'PUT',
-      headers:{'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      headers:{'Authorization':'token '+token,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
       body:JSON.stringify({message:'Gantt actualizado '+new Date().toLocaleString('es-CL'),content,sha:meta.sha})
     });
     if(r.ok){saveS();showToast('✅ Guardado — todos verán los cambios en ~1 min');}
