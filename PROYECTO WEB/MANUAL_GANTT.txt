@@ -1,0 +1,96 @@
+════════════════════════════════════════════════════════
+  MANUAL DE OPERACIÓN — CARTA GANTT INTERACTIVA
+  Plan Digital Fase 1 | Centro Suizo Joyas
+  URL: centrosuizogantt.netlify.app
+════════════════════════════════════════════════════════
+
+Al abrir la página siempre se cargan los últimos datos
+guardados en la nube. No importa el navegador ni el
+dispositivo — todos ven lo mismo.
+
+────────────────────────────────────────────────────────
+1. VER LA GANTT (modo normal)
+────────────────────────────────────────────────────────
+  → Las fechas de cada tarea se ven debajo del nombre
+  → Los diamantes en la línea de HITOS son los hitos clave
+  → Al hacer clic en un diamante baja automáticamente
+    a la tarjeta del hito correspondiente
+  → En este modo NO se puede cambiar nada (solo lectura)
+
+────────────────────────────────────────────────────────
+2. EDITAR FECHAS
+────────────────────────────────────────────────────────
+  → Marcar la casilla "✏️ Modo edición" (arriba a la derecha
+    dentro del card de la Gantt)
+  → Las fechas se convierten en campos editables
+  → Hacer clic en la fecha → aparece el calendario del
+    navegador → seleccionar la nueva fecha
+  → La barra de la tarea se actualiza automáticamente
+  → Para terminar de editar: desmarcar "Modo edición"
+
+  ATAJOS DE TECLADO:
+    Ctrl + Z  →  Deshacer (hasta 50 pasos)
+    Ctrl + Y  →  Rehacer
+
+────────────────────────────────────────────────────────
+3. GUARDAR CAMBIOS EN LA NUBE
+────────────────────────────────────────────────────────
+  → Botón "💾 Guardar" (header, arriba a la derecha)
+  → Ingresar contraseña: centrosuizo2026
+  → En ~1 minuto todos los usuarios ven los cambios
+    al recargar la página
+
+  IMPORTANTE: Sin hacer clic en Guardar, los cambios
+  se pierden al cerrar o recargar la página.
+
+────────────────────────────────────────────────────────
+4. DESHACER / REHACER
+────────────────────────────────────────────────────────
+  → Botón "↩ Deshacer" — revierte el último cambio de fecha
+  → Botón "↪ Rehacer" — vuelve a aplicar lo que se deshizo
+  → Historial de hasta 50 pasos por sesión
+  → También con Ctrl+Z y Ctrl+Y
+
+────────────────────────────────────────────────────────
+5. COMENTARIOS EN HITOS
+────────────────────────────────────────────────────────
+  → Activar "✏️ Modo edición"
+  → Ir a la sección "Hitos Clave" (debajo de la Gantt)
+  → En cada tarjeta aparece la sección de comentarios
+  → Escribir el comentario y hacer clic en "Agregar"
+  → Los comentarios se pueden editar (✏️) o eliminar (🗑)
+  → NOTA: Los comentarios se guardan LOCALMENTE en el
+    navegador, no en la nube. Usar el botón Guardar
+    para persistirlos entre sesiones.
+
+────────────────────────────────────────────────────────
+6. REINICIAR
+────────────────────────────────────────────────────────
+  → Botón "⟳ Reiniciar" (header)
+  → Descarga el último estado guardado desde la nube
+  → Descarta cualquier cambio no guardado de la sesión
+  → Si no hay conexión, vuelve a las fechas por defecto
+
+────────────────────────────────────────────────────────
+7. IMPRIMIR / EXPORTAR A PDF
+────────────────────────────────────────────────────────
+  → Botón "🖨️ PDF" (header)
+  → Se abre el diálogo de impresión del navegador
+  → Seleccionar "Guardar como PDF" como destino
+  → Orientación recomendada: Horizontal (Landscape)
+  → Escala recomendada: 70-80% para que entre en una página
+
+════════════════════════════════════════════════════════
+RESUMEN RÁPIDO
+════════════════════════════════════════════════════════
+
+  Ver fechas        →  Abrir la URL, sin hacer nada más
+  Cambiar fechas    →  Marcar "Modo edición" → editar
+  Guardar para todos →  Botón 💾 Guardar + contraseña
+  Deshacer error    →  Ctrl+Z (o botón ↩ Deshacer)
+  Volver a lo guardado → Botón ⟳ Reiniciar
+  Exportar PDF      →  Botón 🖨️ PDF
+
+════════════════════════════════════════════════════════
+Krea & Cuenta SpA | kreaycuenta@gmail.com | Junio 2026
+════════════════════════════════════════════════════════
