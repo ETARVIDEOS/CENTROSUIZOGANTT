@@ -36,7 +36,10 @@ dispositivo — todos ven lo mismo.
 3. GUARDAR CAMBIOS EN LA NUBE
 ────────────────────────────────────────────────────────
   → Botón "💾 Guardar" (header, arriba a la derecha)
-  → Ingresar contraseña: centrosuizo2026
+  → Ingresar contraseña cuando la pida:
+
+        centrosuizo2026
+
   → En ~1 minuto todos los usuarios ven los cambios
     al recargar la página
 
@@ -84,12 +87,12 @@ dispositivo — todos ven lo mismo.
 RESUMEN RÁPIDO
 ════════════════════════════════════════════════════════
 
-  Ver fechas        →  Abrir la URL, sin hacer nada más
-  Cambiar fechas    →  Marcar "Modo edición" → editar
-  Guardar para todos →  Botón 💾 Guardar + contraseña
-  Deshacer error    →  Ctrl+Z (o botón ↩ Deshacer)
-  Volver a lo guardado → Botón ⟳ Reiniciar
-  Exportar PDF      →  Botón 🖨️ PDF
+  Ver fechas           →  Abrir la URL, sin hacer nada más
+  Cambiar fechas       →  Marcar "Modo edición" → editar
+  Guardar para todos   →  Botón 💾 Guardar → contraseña: centrosuizo2026
+  Deshacer error       →  Ctrl+Z (o botón ↩ Deshacer)
+  Volver a lo guardado →  Botón ⟳ Reiniciar
+  Exportar PDF         →  Botón 🖨️ PDF
 
 ════════════════════════════════════════════════════════
 Krea & Cuenta SpA | kreaycuenta@gmail.com | Junio 2026
