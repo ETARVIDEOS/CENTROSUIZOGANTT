@@ -161,14 +161,10 @@ body{overflow-x:hidden;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-
     <div class="header-controls">
       <button class="btn btn-ghost" id="btn-undo" disabled onclick="undo()" title="Deshacer (Ctrl+Z)">↩ Deshacer</button>
       <button class="btn btn-ghost" id="btn-redo" disabled onclick="redo()" title="Rehacer (Ctrl+Y)">↪ Rehacer</button>
-      <button class="btn btn-red" onclick="saveBaseline()">💾 Línea Base</button>
-      <button class="btn btn-outline" id="btn-restore" disabled onclick="restoreBaseline()">↩ Restaurar</button>
+      <button class="btn btn-red" id="btn-save" onclick="saveCloud()">💾 Guardar</button>
       <button class="btn btn-ghost" onclick="resetToDefault()">⟳ Reiniciar</button>
       <button class="btn btn-ghost" onclick="window.print()">🖨️ PDF</button>
     </div>
-  </div>
-  <div class="baseline-banner hidden" id="bl-banner">
-    📌 Línea base: <span id="bl-date"></span> &nbsp;|&nbsp; <span id="bl-diff"></span>
   </div>
 </header>
 
@@ -283,35 +279,51 @@ const DEF_MS = [
 
 // ── STATE ─────────────────────────────────────────────────────
 
-const SK='gantt_csj_v3', BK='gantt_csj_bl_v3';
-let state=loadS()||{tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};
-let baseline=loadBL();
+// ── CLOUD CONFIG ──────────────────────────────────────────────
+const GH_TOKEN  = 'PONER_TOKEN_AQUI'; // GitHub PAT con permiso contents:write
+const SAVE_PWD  = 'centrosuizo2026';
+const GH_RAW    = 'https://raw.githubusercontent.com/ETARVIDEOS/CENTROSUIZOGANTT/main/PROYECTO%20WEB/gantt_state.json';
+const GH_API    = 'https://api.github.com/repos/ETARVIDEOS/CENTROSUIZOGANTT/contents/PROYECTO%20WEB/gantt_state.json';
+
+// ── STATE ─────────────────────────────────────────────────────
+const SK='gantt_csj_v3';
+let state={tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};
 let editMode=false;
 let undoStack=[],redoStack=[];
 
 function dc(x){return JSON.parse(JSON.stringify(x))}
 function loadS(){try{return JSON.parse(localStorage.getItem(SK))}catch{return null}}
 function saveS(){localStorage.setItem(SK,JSON.stringify(state))}
-function loadBL(){try{return JSON.parse(localStorage.getItem(BK))}catch{return null}}
-function saveBL(b){localStorage.setItem(BK,JSON.stringify(b))}
 
-function saveBaseline(){
-  baseline={data:dc(state),at:new Date().toLocaleString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
-  saveBL(baseline);
-  document.getElementById('btn-restore').disabled=false;
-  render();showToast('✅ Línea base guardada');
+async function saveCloud(){
+  if(GH_TOKEN==='PONER_TOKEN_AQUI'){showToast('⚠️ Token no configurado — ver instrucciones');return;}
+  const pwd=prompt('Contraseña para guardar:');
+  if(!pwd||pwd!==SAVE_PWD){showToast('❌ Contraseña incorrecta');return;}
+  const btn=document.getElementById('btn-save');
+  btn.disabled=true;showToast('⏳ Guardando en la nube...');
+  try{
+    const metaR=await fetch(GH_API,{headers:{'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json'}});
+    const meta=await metaR.json();
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(state,null,2))));
+    const r=await fetch(GH_API,{
+      method:'PUT',
+      headers:{'Authorization':'token '+GH_TOKEN,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify({message:'Gantt actualizado '+new Date().toLocaleString('es-CL'),content,sha:meta.sha})
+    });
+    if(r.ok){saveS();showToast('✅ Guardado — todos verán los cambios en ~1 min');}
+    else{const e=await r.json();showToast('❌ Error: '+(e.message||'desconocido'));}
+  }catch(e){showToast('❌ Error de conexión');console.error(e);}
+  finally{btn.disabled=false;}
 }
 
-function restoreBaseline(){
-  if(!baseline)return;
-  if(!confirm('¿Restaurar todas las fechas a la línea base guardada?'))return;
-  state=dc(baseline.data);saveS();render();showToast('↩ Línea base restaurada');
-}
-
-function resetToDefault(){
-  if(!confirm('¿Reiniciar todo al estado original?'))return;
+async function resetToDefault(){
+  if(!confirm('¿Reiniciar a los datos guardados en la nube?'))return;
   undoStack=[];redoStack=[];
-  state={tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};saveS();render();showToast('⟳ Reiniciado');
+  try{
+    const r=await fetch(GH_RAW+'?nc='+Date.now());
+    if(r.ok){const d=await r.json();if(d&&d.tasks&&d.tasks.length){state=d;saveS();render();updateUndoBtns();showToast('⟳ Reiniciado desde la nube');return;}}
+  }catch(e){}
+  state={tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};saveS();render();updateUndoBtns();showToast('⟳ Reiniciado (valores por defecto)');
 }
 
 function pushHistory(){
@@ -361,7 +373,7 @@ function pct(s){const r=getRange();const t=diffD(r.start,r.end);return t===0?0:M
 
 // ── RENDER ────────────────────────────────────────────────────
 
-function render(){renderGantt();renderMS();updateBLBanner()}
+function render(){renderGantt();renderMS();}
 
 function renderGantt(){
   const r=getRange();
@@ -590,23 +602,6 @@ function cancelEdit(cid){
 
 // ── BASELINE BANNER ───────────────────────────────────────────
 
-function updateBLBanner(){
-  const banner=document.getElementById('bl-banner');
-  const rb=document.getElementById('btn-restore');
-  if(baseline){
-    banner.classList.remove('hidden');
-    document.getElementById('bl-date').textContent=baseline.at;
-    let d=0;
-    state.tasks.forEach(t=>{const bt=baseline.data.tasks.find(x=>x.id===t.id);if(bt&&(bt.start!==t.start||bt.end!==t.end))d++});
-    state.milestones.forEach(m=>{const bm=baseline.data.milestones.find(x=>x.id===m.id);if(bm&&bm.date!==m.date)d++});
-    document.getElementById('bl-diff').textContent=d===0?'✅ Sin cambios':`⚠️ ${d} tarea(s) modificada(s)`;
-    rb.disabled=false;
-  }else{
-    banner.classList.add('hidden');
-    rb.disabled=true;
-  }
-}
-
 // ── UTILS ─────────────────────────────────────────────────────
 
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
@@ -618,12 +613,25 @@ function showToast(msg){
 }
 
 // ── INIT ──────────────────────────────────────────────────────
-render();
-updateUndoBtns();
 document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'){e.preventDefault();undo();}
   if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))){e.preventDefault();redo();}
 });
+(async()=>{
+  // Cargar desde la nube primero; si falla usar localStorage o DEF_TASKS
+  try{
+    const r=await fetch(GH_RAW+'?nc='+Date.now());
+    if(r.ok){
+      const d=await r.json();
+      if(d&&d.tasks&&d.tasks.length){state=d;saveS();}
+    }
+  }catch(e){
+    const local=loadS();
+    if(local&&local.tasks&&local.tasks.length)state=local;
+  }
+  render();
+  updateUndoBtns();
+})();
 </script>
 </body>
 </html>
