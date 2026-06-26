@@ -288,6 +288,7 @@ const GH_API    = 'https://api.github.com/repos/ETARVIDEOS/CENTROSUIZOGANTT/cont
 // ── STATE ─────────────────────────────────────────────────────
 const SK='gantt_csj_v3';
 let state={tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};
+let baseline=null;
 let editMode=false;
 let undoStack=[],redoStack=[];
 
