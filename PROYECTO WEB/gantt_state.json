@@ -1,26 +1,186 @@
 {
   "tasks": [
-    {"id":"f11","type":"phase","ph":"1.1","lbl":"⚡ Fase 1.1 — Quick Win Meta Ads","start":"2026-07-01","end":"2026-07-15","c":"#e94560"},
-    {"id":"t1","type":"task","ph":"1.1","lbl":"Landing page Argollas Matrimonio (GitHub + Cloudflare Pages)","start":"2026-07-01","end":"2026-07-05","c":"#f4a7b4"},
-    {"id":"t2","type":"task","ph":"1.1","lbl":"Landing page Anillos de Compromiso (GitHub + Cloudflare Pages)","start":"2026-07-01","end":"2026-07-05","c":"#f4a7b4"},
-    {"id":"t3","type":"task","ph":"1.1","lbl":"Forms CRM SuperSonics + Meta Pixel en landings","start":"2026-07-05","end":"2026-07-08","c":"#f4a7b4"},
-    {"id":"t4","type":"task","ph":"1.1","lbl":"Guión emocional de ventas WhatsApp","start":"2026-07-01","end":"2026-07-07","c":"#f4a7b4"},
-    {"id":"t5","type":"task","ph":"1.1","lbl":"Configuración y lanzamiento campañas Meta Ads","start":"2026-07-08","end":"2026-07-15","c":"#f4a7b4"},
-    {"id":"f12","type":"phase","ph":"1.2","lbl":"🌐 Fase 1.2 — Levantamiento Wix + Pixel Meta","start":"2026-07-10","end":"2026-07-30","c":"#0f3460"},
-    {"id":"t6","type":"task","ph":"1.2","lbl":"Levantamiento Web Wix + instalación Pixel Meta Ads","start":"2026-07-10","end":"2026-07-22","c":"#6fa8dc"},
-    {"id":"t7","type":"task","ph":"1.2","lbl":"Actualización catálogo 310 productos (Excel → CSV Wix)","start":"2026-07-10","end":"2026-07-30","c":"#6fa8dc"},
-    {"id":"t8","type":"task","ph":"1.2","lbl":"Campaña e-commerce Aros Bebé / Cadenas (máx. 4 productos)","start":"2026-07-25","end":"2026-07-30","c":"#6fa8dc"},
-    {"id":"f13","type":"phase","ph":"1.3","lbl":"🎁 Fase 1.3 — Google Ads (Bonus incluido)","start":"2026-07-30","end":"2026-08-10","c":"#27ae60"},
-    {"id":"t9","type":"task","ph":"1.3","lbl":"Configuración Google Ads + palabras clave Iquique","start":"2026-07-30","end":"2026-08-05","c":"#93c47d"},
-    {"id":"t10","type":"task","ph":"1.3","lbl":"Primera campaña Google Ads activa","start":"2026-08-05","end":"2026-08-10","c":"#93c47d"}
+    {
+      "id": "f11",
+      "type": "phase",
+      "ph": "1.1",
+      "lbl": "⚡ Fase 1.1 — Quick Win Meta Ads",
+      "start": "2026-07-01",
+      "end": "2026-07-15",
+      "c": "#e94560"
+    },
+    {
+      "id": "t1",
+      "type": "task",
+      "ph": "1.1",
+      "lbl": "Landing page Argollas Matrimonio (GitHub + Cloudflare Pages)",
+      "start": "2026-07-01",
+      "end": "2026-07-13",
+      "c": "#f4a7b4"
+    },
+    {
+      "id": "t2",
+      "type": "task",
+      "ph": "1.1",
+      "lbl": "Landing page Anillos de Compromiso (GitHub + Cloudflare Pages)",
+      "start": "2026-07-01",
+      "end": "2026-07-13",
+      "c": "#f4a7b4"
+    },
+    {
+      "id": "t3",
+      "type": "task",
+      "ph": "1.1",
+      "lbl": "Forms CRM SuperSonics + Meta Pixel en landings",
+      "start": "2026-07-05",
+      "end": "2026-07-08",
+      "c": "#f4a7b4"
+    },
+    {
+      "id": "t4",
+      "type": "task",
+      "ph": "1.1",
+      "lbl": "Guión emocional de ventas WhatsApp",
+      "start": "2026-07-01",
+      "end": "2026-07-08",
+      "c": "#f4a7b4"
+    },
+    {
+      "id": "t5",
+      "type": "task",
+      "ph": "1.1",
+      "lbl": "Configuración y lanzamiento campañas Meta Ads",
+      "start": "2026-07-13",
+      "end": "2026-07-15",
+      "c": "#f4a7b4"
+    },
+    {
+      "id": "f12",
+      "type": "phase",
+      "ph": "1.2",
+      "lbl": "🌐 Fase 1.2 — Levantamiento Wix + Pixel Meta",
+      "start": "2026-07-10",
+      "end": "2026-07-30",
+      "c": "#0f3460"
+    },
+    {
+      "id": "t6",
+      "type": "task",
+      "ph": "1.2",
+      "lbl": "Levantamiento Web Wix + instalación Pixel Meta Ads",
+      "start": "2026-07-10",
+      "end": "2026-07-22",
+      "c": "#6fa8dc"
+    },
+    {
+      "id": "t7",
+      "type": "task",
+      "ph": "1.2",
+      "lbl": "Actualización catálogo 310 productos (Excel → CSV Wix)",
+      "start": "2026-07-10",
+      "end": "2026-07-30",
+      "c": "#6fa8dc"
+    },
+    {
+      "id": "t8",
+      "type": "task",
+      "ph": "1.2",
+      "lbl": "Campaña e-commerce Aros Bebé / Cadenas (máx. 4 productos)",
+      "start": "2026-07-25",
+      "end": "2026-07-30",
+      "c": "#6fa8dc"
+    },
+    {
+      "id": "f13",
+      "type": "phase",
+      "ph": "1.3",
+      "lbl": "🎁 Fase 1.3 — Google Ads (Bonus incluido)",
+      "start": "2026-07-30",
+      "end": "2026-08-10",
+      "c": "#27ae60"
+    },
+    {
+      "id": "t9",
+      "type": "task",
+      "ph": "1.3",
+      "lbl": "Configuración Google Ads + palabras clave Iquique",
+      "start": "2026-07-30",
+      "end": "2026-08-05",
+      "c": "#93c47d"
+    },
+    {
+      "id": "t10",
+      "type": "task",
+      "ph": "1.3",
+      "lbl": "Primera campaña Google Ads activa",
+      "start": "2026-08-05",
+      "end": "2026-08-10",
+      "c": "#93c47d"
+    }
   ],
   "milestones": [
-    {"id":"m1","ph":"1.1","lbl":"🎓 Capacitación comercial WhatsApp + Marcador PC","desc":"5 horas de entrenamiento práctico para el equipo de ventas. Máx. 4 dispositivos. No incluye CRM — enfoque en técnicas de venta por WhatsApp.","date":"2026-07-08","c":"#e94560","comments":[]},
-    {"id":"m2","ph":"1.2","lbl":"📊 Excel catálogo entregado a Jordan","desc":"Planilla con los 310 productos para actualización de precios y fichas por el equipo del cliente.","date":"2026-07-08","c":"#0f3460","comments":[]},
-    {"id":"m3","ph":"1.2","lbl":"✅ Feedback Excel recibido de Jordan","desc":"Fecha límite: viernes 10 de Julio. El inicio de la Fase 1.2 depende de esta entrega. Sin feedback, la Fase 1.2 se reprograma.","date":"2026-07-10","c":"#0f3460","comments":[]},
-    {"id":"m4","ph":"1.1","lbl":"🚀 Campañas Meta Ads LIVE — Argollas + Anillos","desc":"Ambas campañas activas con landings funcionando, formulario CRM y Pixel Meta instalado.","date":"2026-07-15","c":"#e94560","comments":[]},
-    {"id":"m5","ph":"1.2","lbl":"🌐 Sitio Wix Operativo + Dominio Activo","desc":"joyeriacentrosuizo.cl activo, Pixel Meta instalado, catálogo actualizado.","date":"2026-07-30","c":"#0f3460","comments":[]},
-    {"id":"m6","ph":"1.3","lbl":"🎁 Google Ads Activo (Bonus)","desc":"Primera campaña activa. Condición: Wix debe estar operativo antes del 30 de julio.","date":"2026-08-10","c":"#27ae60","comments":[]},
-    {"id":"m7","ph":"1.3","lbl":"📈 Primera Revisión Resultados Fase 1","desc":"Análisis de CAL y ROAS. Definición de alcance para Fase 2.","date":"2026-08-10","c":"#27ae60","comments":[]}
+    {
+      "id": "m1",
+      "ph": "1.1",
+      "lbl": "🎓 Capacitación comercial WhatsApp + Marcador PC",
+      "desc": "5 horas de entrenamiento práctico para el equipo de ventas. Máx. 4 dispositivos. No incluye CRM — enfoque en técnicas de venta por WhatsApp.",
+      "date": "2026-07-08",
+      "c": "#e94560",
+      "comments": []
+    },
+    {
+      "id": "m2",
+      "ph": "1.2",
+      "lbl": "📊 Excel catálogo entregado a Jordan",
+      "desc": "Planilla con los 310 productos para actualización de precios y fichas por el equipo del cliente.",
+      "date": "2026-07-08",
+      "c": "#0f3460",
+      "comments": []
+    },
+    {
+      "id": "m3",
+      "ph": "1.2",
+      "lbl": "✅ Feedback Excel recibido de Jordan",
+      "desc": "Fecha límite: viernes 10 de Julio. El inicio de la Fase 1.2 depende de esta entrega. Sin feedback, la Fase 1.2 se reprograma.",
+      "date": "2026-07-10",
+      "c": "#0f3460",
+      "comments": []
+    },
+    {
+      "id": "m4",
+      "ph": "1.1",
+      "lbl": "🚀 Campañas Meta Ads LIVE — Argollas + Anillos",
+      "desc": "Ambas campañas activas con landings funcionando, formulario CRM y Pixel Meta instalado.",
+      "date": "2026-07-15",
+      "c": "#e94560",
+      "comments": []
+    },
+    {
+      "id": "m5",
+      "ph": "1.2",
+      "lbl": "🌐 Sitio Wix Operativo + Dominio Activo",
+      "desc": "joyeriacentrosuizo.cl activo, Pixel Meta instalado, catálogo actualizado.",
+      "date": "2026-07-30",
+      "c": "#0f3460",
+      "comments": []
+    },
+    {
+      "id": "m6",
+      "ph": "1.3",
+      "lbl": "🎁 Google Ads Activo (Bonus)",
+      "desc": "Primera campaña activa. Condición: Wix debe estar operativo antes del 30 de julio.",
+      "date": "2026-08-10",
+      "c": "#27ae60",
+      "comments": []
+    },
+    {
+      "id": "m7",
+      "ph": "1.3",
+      "lbl": "📈 Primera Revisión Resultados Fase 1",
+      "desc": "Análisis de CAL y ROAS. Definición de alcance para Fase 2.",
+      "date": "2026-08-10",
+      "c": "#27ae60",
+      "comments": []
+    }
   ]
 }
