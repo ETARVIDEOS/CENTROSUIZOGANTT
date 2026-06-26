@@ -63,8 +63,8 @@ body{overflow-x:hidden;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-
 .phase-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .date-row{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:2px}
 .dt-in{font-size:10px;padding:2px 5px;border:1px solid #ddd;border-radius:4px;color:#555;background:#fff;cursor:pointer;width:105px}
-.dt-in[readonly]{border-color:transparent;background:transparent;cursor:default;color:#777}
-.dt-in:not([readonly]):focus{outline:none;border-color:#e94560}
+.dt-in:disabled{border-color:transparent;background:transparent;cursor:default;color:#777;opacity:1;-webkit-text-fill-color:#777}
+.dt-in:not(:disabled):focus{outline:none;border-color:#e94560}
 .dt-sep{font-size:10px;color:#ccc}
 
 .gantt-row-chart{flex:1;position:relative;min-height:34px}
@@ -87,8 +87,8 @@ body{overflow-x:hidden;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-
 .ms-name{font-size:12px;font-weight:700;color:#1a1a2e;line-height:1.4;margin:0 0 8px}
 .ms-date-badge{display:none}
 .ms-date-in{font-size:11px;padding:3px 7px;border:1px solid #ddd;border-radius:6px;color:#333;cursor:pointer;display:inline-block;background:#fff}
-.ms-date-in[readonly]{border-color:transparent;background:transparent;cursor:default;color:#555}
-.ms-date-in:not([readonly]):focus{outline:none;border-color:#e94560}
+.ms-date-in:disabled{border-color:transparent;background:transparent;cursor:default;color:#555;opacity:1;-webkit-text-fill-color:#555}
+.ms-date-in:not(:disabled):focus{outline:none;border-color:#e94560}
 .ms-base-chip{font-size:9px;color:#bbb;font-style:italic;display:none;margin-top:3px}
 .ms-base-chip.show{display:block}
 .ms-desc{margin:6px 0 0;font-size:11px;color:#888;line-height:1.5}
@@ -339,8 +339,8 @@ function updateUndoBtns(){
 
 function setEditMode(on){
   editMode=on;
-  document.querySelectorAll('.dt-in').forEach(e=>on?e.removeAttribute('readonly'):e.setAttribute('readonly',''));
-  document.querySelectorAll('.ms-date-in').forEach(e=>on?e.removeAttribute('readonly'):e.setAttribute('readonly',''));
+  document.querySelectorAll('.dt-in').forEach(e=>on?e.removeAttribute('disabled'):e.setAttribute('disabled',''));
+  document.querySelectorAll('.ms-date-in').forEach(e=>on?e.removeAttribute('disabled'):e.setAttribute('disabled',''));
   document.querySelectorAll('.cmt-section').forEach(e=>e.classList.toggle('show',on));
 }
 
@@ -416,9 +416,9 @@ function renderGantt(){
           <span>${t.lbl}</span>
         </div>
         <div class="date-row" id="dr-${t.id}">
-          <input class="dt-in" type="date" value="${t.start}" ${editMode?'':'readonly'} onchange="updTask('${t.id}','start',this.value)">
+          <input class="dt-in" type="date" value="${t.start}" ${editMode?'':'disabled'} onchange="updTask('${t.id}','start',this.value)">
           <span class="dt-sep">→</span>
-          <input class="dt-in" type="date" value="${t.end}" ${editMode?'':'readonly'} onchange="updTask('${t.id}','end',this.value)">
+          <input class="dt-in" type="date" value="${t.end}" ${editMode?'':'disabled'} onchange="updTask('${t.id}','end',this.value)">
         </div>
       </div>
       <div class="gantt-row-chart">
@@ -484,7 +484,7 @@ function renderMS(){
         <div class="ms-phase-tag" style="color:${m.c}">${phLbls[m.ph]||m.ph}</div>
         <div class="ms-name">${m.lbl}</div>
         <div>
-          <input type="date" class="ms-date-in" value="${m.date}" ${editMode?'':'readonly'}
+          <input type="date" class="ms-date-in" value="${m.date}" ${editMode?'':'disabled'}
             onchange="updMS('${m.id}','date',this.value)">
           ${baseChip}
         </div>
