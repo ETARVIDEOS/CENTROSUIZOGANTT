@@ -1,0 +1,344 @@
+════════════════════════════════════════════════════════════
+  MANUAL SUPERSONICS ONE — INVESTIGACIÓN COMPLETA
+  Proyecto: Centro Suizo Joyas | Krea & Cuenta SpA
+  Fecha de investigación: 26 Junio 2026
+  Investigado por: Claude (extensión Chrome, sesión en vivo)
+════════════════════════════════════════════════════════════
+
+URL de acceso: https://app.supersonics.one/v2/location/BqC5uMyvdkyqZnX8W2vV/dashboard
+Cuenta activa: Joyería Centro Suizo (Arica, Arica y Parinacota)
+Usuario titular: Jordan Bruna
+
+════════════════════════════════════════════════════════════
+1. ¿QUÉ ES SUPERSONICS ONE?
+════════════════════════════════════════════════════════════
+
+SuperSonics ONE es un CRM All-in-One que reemplaza más de 10
+herramientas separadas. Según la plataforma misma, incluye:
+
+  CRM y ventas:
+  → Pipeline visual, programación automatizada de citas
+  → WhatsApp API para cerrar ventas más rápido
+  → Conversaciones: WhatsApp, Instagram, Facebook y Email centralizados
+
+  Marketing digital:
+  → Constructor de sitios web y embudos (funnels)
+  → Email Marketing
+  → Planificador de redes sociales
+  → Administrador de anuncios (Facebook, Google, LinkedIn)
+
+  Automatización:
+  → Flujos de trabajo (workflows) por trigger
+  → Automatizaciones por canal: Facebook, Instagram, WhatsApp
+
+  IA:
+  → Agentes de IA propios de la plataforma
+
+════════════════════════════════════════════════════════════
+2. ESTRUCTURA DE LA CUENTA DE JORDAN
+════════════════════════════════════════════════════════════
+
+Nombre de la cuenta: Joyería Centro Suizo
+Zona: Arica, Arica y Parinacota (nota: la cuenta dice Arica,
+      pero el negocio opera en Iquique — revisar configuración)
+
+Redes sociales conectadas (necesitan reconexión):
+  Facebook:   Joyería Centro Suizo  → Reconectar
+  Facebook:   Joyeria Catalina      → Reconectar (negocio distinto)
+  Instagram:  centrosuizo           → Reconectar
+  Instagram:  joyeria_catalina      → Reconectar (negocio distinto)
+
+════════════════════════════════════════════════════════════
+3. SECCIÓN: SITIOS → FORMULARIOS
+════════════════════════════════════════════════════════════
+
+URL: app.supersonics.one/v2/location/.../form-builder/main
+
+Pestañas disponibles en "Sitios":
+  → Sitios (constructor de páginas)
+  → WordPress
+  → Portal del cliente (cursos y comunidad)
+  → FORMULARIOS  ← aquí está lo que necesitamos
+  → Encuestas
+  → Cuestionarios
+  → Widget de chat
+  → Códigos QR
+
+Formularios existentes (al 26-Jun-2026):
+  Nombre: Form 1
+  Creado: Jun 18, 2026
+  Creado por: Jordan Bruna
+  ID del formulario: Olr0hxVXrWqvv0C88Ykd
+
+Campos actuales de Form 1:
+  - First Name
+  - Last Name
+  - Phone (obligatorio)
+  - Email (obligatorio)
+  - Checkbox de consentimiento SMS
+  - Checkbox de consentimiento marketing
+
+════════════════════════════════════════════════════════════
+4. INCRUSTAR FORMULARIO EN LANDING EXTERNA — CONFIRMADO ✅
+════════════════════════════════════════════════════════════
+
+SuperSonics SÍ permite embeber formularios en páginas externas
+(incluyendo Cloudflare Pages y cualquier HTML estático).
+
+CÓMO OBTENER EL CÓDIGO DE EMBED:
+─────────────────────────────────
+1. Ir a Sitios → Formularios
+2. Abrir el formulario (o crear uno nuevo)
+3. Clic en botón "Integrar" (arriba a la derecha del editor)
+4. En el modal "Incrustar o compartir formulario":
+   - Pestaña izquierda: "Incrustar código" (Embed Code)
+   - Tipo de diseño: seleccionar "Inline"
+   - Activador: "Always show"
+   - Desactivación: "Never deactivate"
+5. Copiar el código generado
+
+TIPOS DE EMBED DISPONIBLES:
+  ● Sticky sidebar    → barra lateral que sigue al usuario
+  ● Polite slide-in   → aparece deslizándose desde el borde
+  ● Popup             → ventana emergente con trigger
+  ● Inline            → dentro del flujo de la página ← RECOMENDADO para landings
+
+CÓDIGO DE EMBED REAL (Form 1 de Jordan):
+──────────────────────────────────────────
+<!-- SuperSonics Form Embed -->
+<div style="height:740px; width:100%">
+  <iframe
+    src="https://api.supersonics.one/widget/form/Olr0hxVXrWqvv0C88Ykd"
+    style="width:100%;height:100%;border:none;border-radius:8px"
+    id="inline-Olr0hxVXrWqvv0C88Ykd"
+    data-layout="{'id':'INLINE'}"
+    data-trigger-type="alwaysShow"
+    data-trigger-value=""
+    data-activation-type="alwaysActivated"
+    data-activation-value=""
+    data-deactivation-type="neverDeactivate"
+    data-deactivation-value=""
+    data-form-name="Form 1"
+    data-height="740"
+    data-layout-iframe-id="inline-Olr0hxVXrWqvv0C88Ykd"
+    data-form-id="Olr0hxVXrWqvv0C88Ykd"
+    title="Form 1">
+  </iframe>
+</div>
+<script src="https://api.supersonics.one/js/form_embed.js"></script>
+<!-- Fin SuperSonics Form -->
+
+URL DIRECTA del formulario (para compartir por WhatsApp/redes):
+  https://api.supersonics.one/widget/form/Olr0hxVXrWqvv0C88Ykd
+
+NOTA IMPORTANTE PARA LAS LANDINGS:
+  • Crear UN formulario específico por campaña (Argollas / Anillos)
+  • Cada formulario tiene su propio ID y su propio embed code
+  • Reemplazar "Olr0hxVXrWqvv0C88Ykd" con el nuevo ID
+  • El contenedor div necesita height explícito (740px por defecto)
+  • El <script> va UNA sola vez por página (al final del body)
+
+════════════════════════════════════════════════════════════
+5. SECCIÓN: MARKETING
+════════════════════════════════════════════════════════════
+
+URL: app.supersonics.one/v2/location/.../marketing/...
+
+Pestañas disponibles en Marketing:
+  ① Planificador de redes sociales
+  ② Correos electrónicos
+  ③ Fragmentos
+  ④ Temporizadores de cuenta atrás
+  ⑤ Enlaces de activación
+  ⑥ Affiliate Manager
+  ⑦ Paneles de marca
+  ⑧ Administrador de anuncios  ← VER SECCIÓN 6
+
+5.1 Planificador de redes sociales:
+  → Permite programar publicaciones para Facebook e Instagram
+  → Cuentas de Jordan conectadas: Joyería Centro Suizo (FB),
+    centrosuizo (IG) — ambas requieren reconexión
+
+════════════════════════════════════════════════════════════
+6. ADMINISTRADOR DE ANUNCIOS — REQUIERE ACTIVACIÓN ⚠️
+════════════════════════════════════════════════════════════
+
+URL: app.supersonics.one/v2/location/.../marketing/ad-manager/home
+Estado: NO ACTIVADO (hay botón "Activar el administrador de anuncios")
+
+QUÉ HACE:
+  → Lanzar y gestionar anuncios en Facebook, Google y LinkedIn
+    desde UN SOLO LUGAR dentro de SuperSonics
+  → Seguimiento del rendimiento, conversiones y ROI
+  → Optimizar campañas con plantillas listas
+  → Campañas multiplataforma sin salir del CRM
+  → Seguimiento de conversiones sin fisuras
+  → Estructura granular: campaña → grupo de anuncios → anuncio
+  → Escalabilidad: gestionar múltiples cuentas publicitarias
+
+RECOMENDACIÓN:
+  ┌─────────────────────────────────────────────────────────┐
+  │ ACTIVAR el Administrador de Anuncios de SuperSonics     │
+  │ ANTES de lanzar las campañas de Meta Ads.               │
+  │                                                         │
+  │ Ventaja: gestión de Facebook Ads + Google Ads desde     │
+  │ el mismo panel donde llegan los leads del CRM.          │
+  │                                                         │
+  │ Verificar si tiene costo adicional en el plan actual    │
+  │ antes de activar.                                       │
+  └─────────────────────────────────────────────────────────┘
+
+CÓMO ACTIVAR:
+  → Marketing → Administrador de anuncios
+  → Clic en botón azul "Activar el administrador de anuncios"
+  → Conectar cuenta de Meta Business Suite
+  → Conectar cuenta de Google Ads (para Fase 1.3)
+
+════════════════════════════════════════════════════════════
+7. SECCIÓN: AUTOMATIZACIÓN — FLUJOS DE TRABAJO
+════════════════════════════════════════════════════════════
+
+URL: app.supersonics.one/v2/location/.../automation/workflows
+
+Flujos de trabajo existentes en la cuenta de Jordan:
+
+  Carpetas organizadoras:
+    📁 Facebook     (sin flujos activos adentro)
+    📁 Instagram    (sin flujos activos adentro)
+    📁 WhatsApp     (sin flujos activos adentro)
+
+  Flujos activos:
+    ✅ "Promocion Mensajes Masivos"
+       Estado: Published
+       Total inscritos: 224
+       Inscripción activa: 0
+       Creado: 22 Ene 2026
+
+    📝 "Copy - Promocion Mensajes Masivos Argollas"
+       Estado: Draft (borrador)
+       Total inscritos: 677
+       Inscripción activa: 15
+       Creado: 5 Feb 2026
+
+  NOTA: Hay un flujo específico de ARGOLLAS con 677 inscritos.
+  Esto indica que Jordan ya hizo campañas de argollas previamente
+  con esta base de datos. Revisar antes de crear campañas nuevas.
+
+RECOMENDACIÓN PARA LAS LANDINGS:
+  Crear un flujo de trabajo nuevo por campaña:
+  → Trigger: "Formulario enviado" (cuando alguien llena el form)
+  → Acción 1: Notificación WhatsApp interna al vendedor
+  → Acción 2: WhatsApp automático al lead (mensaje de bienvenida)
+  → Acción 3: Etiquetar lead como "Campaña Argollas Jul 2026"
+  → Acción 4: Asignar tarea de seguimiento en 24h
+
+════════════════════════════════════════════════════════════
+8. CONEXIÓN SUPERSONICS ↔ META ADS
+════════════════════════════════════════════════════════════
+
+Hay 2 formas de conectar SuperSonics con Meta Ads:
+
+OPCIÓN A — Vía Administrador de Anuncios de SuperSonics (MEJOR)
+──────────────────────────────────────────────────────────────
+  → Activar el Ad Manager integrado (ver sección 6)
+  → Conectar la cuenta de Facebook Ads de Jordan
+  → Crear las campañas DESDE SuperSonics
+  → Los leads caen automáticamente en el CRM
+  → Sin Zapier, sin configuraciones adicionales
+  → Ventaja: lead → CRM en tiempo real
+
+OPCIÓN B — Vía Landing Page + Formulario Embed (PLAN ACTUAL)
+──────────────────────────────────────────────────────────────
+  → Anuncio en Meta Ads apunta a Landing en Cloudflare Pages
+  → La landing tiene el formulario embed de SuperSonics
+  → Cuando alguien llena el formulario → entra al CRM de Jordan
+  → El Meta Pixel en la landing trackea el evento "Lead"
+  → Ventaja: landing page propia con diseño personalizado
+
+OPCIÓN C — Vía Zapier (para formularios nativos de Meta)
+──────────────────────────────────────────────────────────────
+  → Meta Business Suite ofrece Zapier como integración CRM
+  → Zapier conecta "Meta Lead Form" → SuperSonics
+  → Requiere plan Zapier + configuración adicional
+  → Solo necesario si se usan formularios nativos de Meta (Lead Ads)
+
+RECOMENDACIÓN PARA FASE 1:
+  Usar OPCIÓN B (landing + form embed) para las campañas de
+  Argollas y Anillos. Es la ruta más directa y ya está
+  confirmada como funcional con el embed code real de SuperSonics.
+
+  Paralelamente: ACTIVAR el Administrador de Anuncios (Opción A)
+  para gestionar las campañas Meta desde SuperSonics directamente.
+
+════════════════════════════════════════════════════════════
+9. PLAN DE ACCIÓN INMEDIATO EN SUPERSONICS
+════════════════════════════════════════════════════════════
+
+PASO 1 — Crear formularios específicos por campaña:
+  → Sitios → Formularios → "+ Crear formulario"
+  → Formulario 1: "Landing Argollas Matrimonio"
+    Campos: Nombre, WhatsApp, ¿Cuándo planificas casarte? (select)
+  → Formulario 2: "Landing Anillos Compromiso"
+    Campos: Nombre, WhatsApp, ¿Para qué ocasión? (select)
+  → Copiar el Embed Code de cada uno → pegar en las landings
+
+PASO 2 — Reconectar redes sociales:
+  → Marketing → Planificador → ícono de cuentas
+  → Reconectar: Joyería Centro Suizo (Facebook)
+  → Reconectar: centrosuizo (Instagram)
+  → Verificar que las páginas sean las de Iquique y no Arica
+
+PASO 3 — Activar Administrador de Anuncios:
+  → Marketing → Administrador de anuncios
+  → Clic "Activar el administrador de anuncios"
+  → Conectar cuenta Meta Business Suite de Jordan
+  → Verificar si hay costo adicional en el plan
+
+PASO 4 — Crear flujos de trabajo post-lead:
+  → Automatización → Flujos de trabajo → Crear flujo de trabajo
+  → Trigger: Formulario enviado (ID del form de Argollas)
+  → Acción: WhatsApp interno + WhatsApp automático al lead
+
+PASO 5 — Verificar ciudad en la cuenta:
+  → La cuenta dice "Arica" pero el negocio opera en Iquique
+  → Configuración → Información de la empresa → actualizar ciudad
+
+════════════════════════════════════════════════════════════
+10. DATOS TÉCNICOS RELEVANTES
+════════════════════════════════════════════════════════════
+
+Location ID (en la URL de todas las páginas):
+  BqC5uMyvdkyqZnX8W2vV
+
+Form 1 ID (formulario existente):
+  Olr0hxVXrWqvv0C88Ykd
+
+API endpoint para formularios:
+  https://api.supersonics.one/widget/form/{FORM_ID}
+
+Script de formularios:
+  https://api.supersonics.one/js/form_embed.js
+
+Portal del cliente URL:
+  https://bqc5umvdkyqznx8w2vv.app.clientclub.net/
+
+════════════════════════════════════════════════════════════
+NOTAS FINALES
+════════════════════════════════════════════════════════════
+
+• El plan de SuperSonics de Jordan YA incluye:
+  formularios, funnels, automatizaciones, WhatsApp API,
+  agentes IA, y administrador de anuncios (requiere activación)
+
+• No se pudo confirmar el precio exacto del plan desde la
+  sesión de investigación. Verificar en Configuración → Facturación
+
+• La extensión Claude en Chrome no puede navegar a supersonics.one
+  directamente (restricción de dominio de la extensión). Para
+  investigaciones futuras: usar screenshots manuales o acceso
+  directo desde el navegador.
+
+────────────────────────────────────────────────────────────
+Documento de uso interno — Krea & Cuenta SpA | Junio 2026
+Investigación realizada el 26-Jun-2026 mediante sesión en vivo
+════════════════════════════════════════════════════════════

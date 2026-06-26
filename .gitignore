@@ -1,0 +1,11 @@
+CLAVES/
+CATALOGOS/
+ARCHIVOS  Y FOTOS/
+images/
+*.csv
+*.docx
+*.pdf
+*.tmp
+~$*
+PROMPT.txt
+SKILLS PARA AGENTES CLAUDE.pdf

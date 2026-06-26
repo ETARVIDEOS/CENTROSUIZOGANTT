@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta Gantt — Plan Digital Fase 1 | Centro Suizo Joyas</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:hidden;font-size:16px}
+body{overflow-x:hidden;margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;background:#f5f6fa;color:#1a1a2e}
+
+/* HEADER */
+.app-header{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 60%,#0f3460 100%);color:#fff;padding:20px 24px 14px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.header-inner{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px;max-width:1300px;margin:0 auto}
+.brand{font-size:10px;letter-spacing:2px;text-transform:uppercase;opacity:.5}
+.project-title{margin:3px 0 2px;font-size:clamp(16px,3vw,24px);font-weight:700}
+.project-sub{margin:0;font-size:12px;opacity:.6}
+.header-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.btn{padding:6px 13px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:none;transition:all .15s;font-family:inherit}
+.btn:disabled{opacity:.35;cursor:not-allowed}
+.btn-red{background:#e94560;color:#fff}
+.btn-red:hover:not(:disabled){background:#c23152}
+.btn-outline{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-outline:hover:not(:disabled){background:rgba(255,255,255,.22)}
+.btn-ghost{background:transparent;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{color:#fff;border-color:rgba(255,255,255,.5)}
+.baseline-banner{max-width:1300px;margin:8px auto 0;font-size:11px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:8px}
+.baseline-banner.hidden{display:none}
+
+/* OBJECTIVE */
+.objective-banner{background:linear-gradient(135deg,#fff8e8,#fff3d6);border-left:4px solid #f39c12;padding:14px 24px}
+.objective-banner-inner{max-width:1300px;margin:0 auto}
+.objective-banner h2{margin:0 0 5px;font-size:12px;font-weight:700;color:#d68910;text-transform:uppercase;letter-spacing:1px}
+.objective-banner p{margin:0;font-size:13px;color:#555;line-height:1.6}
+
+/* MAIN */
+.main{max-width:1300px;margin:0 auto;padding:20px 16px 60px}
+
+/* CARDS */
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:20px;overflow:hidden}
+.card-head{padding:14px 18px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.card-head h2{margin:0;font-size:15px;font-weight:700}
+.card-head-sub{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#bbb;font-weight:600}
+.edit-toggle{display:flex;align-items:center;gap:7px;font-size:12px;color:#666;cursor:pointer}
+.edit-toggle input{cursor:pointer;accent-color:#e94560}
+
+/* GANTT */
+.gantt-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.gantt-inner{min-width:700px}
+.gantt-head-row{display:flex;border-bottom:2px solid #eee;background:#fafafa}
+.gantt-col-label{width:250px;min-width:250px;flex-shrink:0;padding:6px 12px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#bbb;border-right:2px solid #eee}
+.gantt-col-chart{flex:1;position:relative;min-height:32px}
+.week-hdr-wrap{position:relative;height:34px}
+.week-hdr{position:absolute;top:0;bottom:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:#bbb;font-weight:700;text-align:center;line-height:1.3;border-right:1px dashed #eee}
+
+.gantt-row{display:flex;border-bottom:1px solid #f5f5f5;min-height:34px}
+.gantt-row:hover{background:#fafafa}
+.gantt-row.is-phase{background:#f8f8f8;min-height:40px}
+.gantt-row-label{width:250px;min-width:250px;flex-shrink:0;padding:5px 10px;border-right:2px solid #eee;display:flex;flex-direction:column;justify-content:center;gap:3px}
+.task-lbl{font-size:12px;line-height:1.3;display:flex;align-items:center;gap:5px}
+.task-lbl.phase-lbl{font-weight:700;font-size:12px}
+.task-lbl.sub-lbl{padding-left:10px;color:#555;font-size:11px}
+.phase-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.date-row{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin-top:2px}
+.dt-in{font-size:10px;padding:2px 5px;border:1px solid #ddd;border-radius:4px;color:#555;background:#fff;cursor:pointer;width:105px}
+.dt-in[readonly]{border-color:transparent;background:transparent;cursor:default;color:#777}
+.dt-in:not([readonly]):focus{outline:none;border-color:#e94560}
+.dt-sep{font-size:10px;color:#ccc}
+
+.gantt-row-chart{flex:1;position:relative;min-height:34px}
+.is-phase .gantt-row-chart{min-height:40px}
+.wk-bg{position:absolute;top:0;bottom:0;border-right:1px dashed #f2f2f2;pointer-events:none}
+.wk-bg.odd{background:rgba(0,0,0,.012)}
+.g-bar{position:absolute;top:50%;transform:translateY(-50%);height:12px;border-radius:4px;transition:left .25s,width .25s;min-width:3px}
+.g-bar.ph{height:18px;border-radius:6px}
+.g-bar-base{position:absolute;top:50%;transform:translateY(-50%);height:12px;border-radius:4px;background:transparent;border:2px dashed;opacity:.35;pointer-events:none;transition:left .25s,width .25s;min-width:3px}
+.g-bar-base.ph{height:18px;border-radius:6px}
+.ms-diamond{position:absolute;top:50%;width:11px;height:11px;border-radius:2px;border:2.5px solid;background:#fff;cursor:pointer;z-index:2;transform:translateY(-50%) translateX(-50%) rotate(45deg);transition:left .25s}
+.ms-diamond:hover{transform:translateY(-50%) translateX(-50%) rotate(45deg) scale(1.4)}
+.ms-row-label{font-size:10px;color:#aaa;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+
+/* MILESTONES */
+.ms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:16px}
+.ms-card{border-radius:10px;border:1px solid #eee;overflow:hidden;background:#fff}
+.ms-card-top{padding:12px 14px 10px;border-left:4px solid}
+.ms-phase-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;opacity:.65;margin-bottom:3px}
+.ms-name{font-size:12px;font-weight:700;color:#1a1a2e;line-height:1.4;margin:0 0 8px}
+.ms-date-badge{display:none}
+.ms-date-in{font-size:11px;padding:3px 7px;border:1px solid #ddd;border-radius:6px;color:#333;cursor:pointer;display:inline-block;background:#fff}
+.ms-date-in[readonly]{border-color:transparent;background:transparent;cursor:default;color:#555}
+.ms-date-in:not([readonly]):focus{outline:none;border-color:#e94560}
+.ms-base-chip{font-size:9px;color:#bbb;font-style:italic;display:none;margin-top:3px}
+.ms-base-chip.show{display:block}
+.ms-desc{margin:6px 0 0;font-size:11px;color:#888;line-height:1.5}
+
+/* COMMENTS */
+.cmt-section{padding:8px 14px 12px;border-top:1px solid #f0f0f0;background:#fafafa;display:none}
+.cmt-section.show{display:block}
+.cmt-toggle{font-size:11px;color:#888;cursor:pointer;border:none;background:none;padding:0;font-family:inherit;display:flex;align-items:center;gap:5px}
+.cmt-toggle:hover{color:#555}
+.cmt-badge{background:#e94560;color:#fff;font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;display:none}
+.cmt-badge.show{display:inline}
+.cmt-body{display:none;margin-top:8px}
+.cmt-body.open{display:block}
+.cmt-item{background:#fff;border:1px solid #eee;border-radius:7px;padding:7px 9px;margin-bottom:5px;font-size:11px}
+.cmt-meta{font-size:9px;color:#ccc;margin-bottom:2px}
+.cmt-text{color:#444;line-height:1.5}
+.cmt-edit-area{width:100%;font-size:11px;padding:4px 6px;border:1px solid #ddd;border-radius:4px;font-family:inherit;resize:vertical;min-height:38px;display:none}
+.cmt-actions{display:flex;gap:8px;margin-top:4px}
+.cmt-btn{font-size:9px;color:#bbb;cursor:pointer;border:none;background:none;padding:0;font-family:inherit}
+.cmt-btn:hover{color:#333}
+.cmt-btn.del:hover{color:#e94560}
+.cmt-btn.sv{color:#27ae60;font-weight:700;display:none}
+.cmt-btn.cn{display:none}
+.add-cmt-row{display:flex;gap:5px;align-items:flex-start}
+.cmt-input{flex:1;font-size:11px;padding:5px 7px;border:1px solid #ddd;border-radius:6px;font-family:inherit;resize:vertical;min-height:32px}
+.cmt-input:focus{outline:none;border-color:#e94560}
+.btn-add-cmt{padding:5px 10px;background:#e94560;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0}
+.btn-add-cmt:hover{background:#c23152}
+
+/* CLIENT SECTION */
+.client-section{padding:16px}
+.client-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+.client-card{background:#f9fafb;border:1px solid #eee;border-radius:9px;padding:12px 14px}
+.client-card h4{margin:0 0 8px;font-size:12px;font-weight:700;color:#1a1a2e}
+.del-list{list-style:none;margin:0;padding:0}
+.del-list li{display:flex;gap:7px;font-size:11px;color:#555;padding:3px 0;border-bottom:1px solid #f0f0f0;line-height:1.5}
+.del-list li:last-child{border-bottom:none}
+.del-list li::before{content:"✓";color:#27ae60;font-weight:700;flex-shrink:0}
+.del-list li.dot::before{content:"•";color:#e94560}
+
+/* FOOTER */
+.footer{text-align:center;padding:18px;border-top:1px solid #eee;background:#fff;font-size:10px;color:#bbb}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;right:20px;background:#1a1a2e;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:opacity .3s;opacity:0}
+
+/* RESPONSIVE */
+@media(max-width:900px){.ms-grid{grid-template-columns:repeat(2,1fr)}.client-grid{grid-template-columns:1fr}}
+@media(max-width:580px){.ms-grid{grid-template-columns:1fr}.gantt-col-label,.gantt-row-label{width:160px;min-width:160px}.dt-in{width:88px}}
+
+/* PRINT */
+@media print{
+  .app-header{position:relative;box-shadow:none}
+  .header-controls{display:none}
+  .edit-toggle{display:none}
+  .cmt-section{display:none!important}
+  .date-row{display:none!important}
+}
+</style>
+</head>
+<body>
+
+<header class="app-header">
+  <div class="header-inner">
+    <div>
+      <div class="brand">Krea &amp; Cuenta SpA — Plan Digital</div>
+      <h1 class="project-title">Plan Digital — Fase 1</h1>
+      <p class="project-sub">Centro Suizo Joyas · Iquique, Chile · Julio – Agosto 2026</p>
+    </div>
+    <div class="header-controls">
+      <button class="btn btn-ghost" id="btn-undo" disabled onclick="undo()" title="Deshacer (Ctrl+Z)">↩ Deshacer</button>
+      <button class="btn btn-ghost" id="btn-redo" disabled onclick="redo()" title="Rehacer (Ctrl+Y)">↪ Rehacer</button>
+      <button class="btn btn-red" onclick="saveBaseline()">💾 Línea Base</button>
+      <button class="btn btn-outline" id="btn-restore" disabled onclick="restoreBaseline()">↩ Restaurar</button>
+      <button class="btn btn-ghost" onclick="resetToDefault()">⟳ Reiniciar</button>
+      <button class="btn btn-ghost" onclick="window.print()">🖨️ PDF</button>
+    </div>
+  </div>
+  <div class="baseline-banner hidden" id="bl-banner">
+    📌 Línea base: <span id="bl-date"></span> &nbsp;|&nbsp; <span id="bl-diff"></span>
+  </div>
+</header>
+
+<div class="objective-banner">
+  <div class="objective-banner-inner">
+    <h2>🎯 Objetivo Central Fase 1</h2>
+    <p>Determinar con precisión el <strong>Costo de Adquisición de Lead (CAL)</strong> usando la infraestructura web actual, estableciendo la base métrica para proyectar volumen y rentabilidad del plan de ventas. <strong>El cliente registrará las ventas de los productos ofertados por formulario para medir el ROAS (Retorno de Inversión Publicitaria).</strong></p>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- GANTT -->
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <h2>Carta Gantt Interactiva</h2>
+        <span class="card-head-sub" id="range-label"></span>
+      </div>
+      <label class="edit-toggle">
+        <input type="checkbox" id="edit-chk" onchange="setEditMode(this.checked)">
+        ✏️ Modo edición
+      </label>
+    </div>
+    <div class="gantt-scroll">
+      <div class="gantt-inner" id="gantt-chart"></div>
+    </div>
+  </div>
+
+  <!-- MILESTONES -->
+  <div class="card">
+    <div class="card-head">
+      <h2>🏁 Hitos Clave</h2>
+      <span class="card-head-sub">Fechas editables en modo edición · Comentarios guardados localmente</span>
+    </div>
+    <div class="ms-grid" id="ms-grid"></div>
+  </div>
+
+  <!-- CLIENT COMMITMENTS -->
+  <div class="card">
+    <div class="card-head">
+      <h2>📋 Compromisos del Cliente</h2>
+      <span class="card-head-sub">Condiciones para la ejecución del plan</span>
+    </div>
+    <div class="client-section">
+      <div class="client-grid">
+        <div class="client-card">
+          <h4>✅ El cliente entregará</h4>
+          <ul class="del-list">
+            <li>Directrices claras sobre contenidos de anuncios y precios de productos</li>
+            <li>Fotografías de catálogo disponibles en la página actual de Wix</li>
+            <li>Autorización para reutilizar videos y publicaciones de Instagram para pauta publicitaria</li>
+            <li>Accesos administrativos a todos los sistemas necesarios para la ejecución del plan</li>
+            <li>Facilidades de tiempo y conexión para colaboradores en capacitación online</li>
+            <li>Registro de ventas de productos ofertados por formulario (para medir ROAS)</li>
+            <li class="dot">Feedback del Excel catálogo antes del viernes 10 de Julio (plazo límite)</li>
+          </ul>
+        </div>
+        <div class="client-card">
+          <h4>💰 Costos y logística</h4>
+          <ul class="del-list">
+            <li class="dot">Pago de pauta publicitaria directamente a Meta Ads cubierto por el cliente</li>
+            <li class="dot">Sistemas de software adicionales cubiertos por el cliente</li>
+            <li class="dot">Inversión sugerida en publicidad: mínimo $700.000 CLP/mes para Fase 1</li>
+            <li class="dot">Los valores de la propuesta no incluyen IVA</li>
+            <li class="dot">Pago: 50% anticipo al inicio · 50% contra entrega de entregables operativos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <strong>Krea &amp; Cuenta SpA</strong> · kreaycuenta@gmail.com · Preparado para Jordan Bruna Opazo — Centro Suizo Joyas · Junio 2026<br>
+  <span>Los datos y comentarios se guardan localmente en este navegador. Para compartir: Ctrl+P → Guardar como PDF.</span>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────
+
+const C = { r:'#e94560', rs:'#f4a7b4', b:'#0f3460', bs:'#6fa8dc', g:'#27ae60', gs:'#93c47d' };
+
+const DEF_TASKS = [
+  {id:'f11',type:'phase',ph:'1.1',lbl:'⚡ Fase 1.1 — Quick Win Meta Ads',start:'2026-07-01',end:'2026-07-15',c:C.r},
+  {id:'t1',type:'task',ph:'1.1',lbl:'Landing page Argollas Matrimonio (GitHub + Cloudflare Pages)',start:'2026-07-01',end:'2026-07-05',c:C.rs},
+  {id:'t2',type:'task',ph:'1.1',lbl:'Landing page Anillos de Compromiso (GitHub + Cloudflare Pages)',start:'2026-07-01',end:'2026-07-05',c:C.rs},
+  {id:'t3',type:'task',ph:'1.1',lbl:'Forms CRM SuperSonics + Meta Pixel en landings',start:'2026-07-05',end:'2026-07-08',c:C.rs},
+  {id:'t4',type:'task',ph:'1.1',lbl:'Guión emocional de ventas WhatsApp',start:'2026-07-01',end:'2026-07-07',c:C.rs},
+  {id:'t5',type:'task',ph:'1.1',lbl:'Configuración y lanzamiento campañas Meta Ads',start:'2026-07-08',end:'2026-07-15',c:C.rs},
+  {id:'f12',type:'phase',ph:'1.2',lbl:'🌐 Fase 1.2 — Levantamiento Wix + Pixel Meta',start:'2026-07-10',end:'2026-07-30',c:C.b},
+  {id:'t6',type:'task',ph:'1.2',lbl:'Levantamiento Web Wix + instalación Pixel Meta Ads',start:'2026-07-10',end:'2026-07-22',c:C.bs},
+  {id:'t7',type:'task',ph:'1.2',lbl:'Actualización catálogo 310 productos (Excel → CSV Wix)',start:'2026-07-10',end:'2026-07-30',c:C.bs},
+  {id:'t8',type:'task',ph:'1.2',lbl:'Campaña e-commerce Aros Bebé / Cadenas (máx. 4 productos)',start:'2026-07-25',end:'2026-07-30',c:C.bs},
+  {id:'f13',type:'phase',ph:'1.3',lbl:'🎁 Fase 1.3 — Google Ads (Bonus incluido)',start:'2026-07-30',end:'2026-08-10',c:C.g},
+  {id:'t9',type:'task',ph:'1.3',lbl:'Configuración Google Ads + palabras clave Iquique',start:'2026-07-30',end:'2026-08-05',c:C.gs},
+  {id:'t10',type:'task',ph:'1.3',lbl:'Primera campaña Google Ads activa',start:'2026-08-05',end:'2026-08-10',c:C.gs},
+];
+
+const DEF_MS = [
+  {id:'m1',ph:'1.1',lbl:'🎓 Capacitación comercial WhatsApp + Marcador PC',desc:'5 horas de entrenamiento práctico para el equipo de ventas. Máx. 4 dispositivos. No incluye CRM — enfoque en técnicas de venta por WhatsApp.',date:'2026-07-08',c:C.r,comments:[]},
+  {id:'m2',ph:'1.2',lbl:'📊 Excel catálogo entregado a Jordan',desc:'Planilla con los 310 productos para actualización de precios y fichas por el equipo del cliente.',date:'2026-07-08',c:C.b,comments:[]},
+  {id:'m3',ph:'1.2',lbl:'✅ Feedback Excel recibido de Jordan',desc:'Fecha límite: viernes 10 de Julio. El inicio de la Fase 1.2 depende de esta entrega. Sin feedback, la Fase 1.2 se reprograma.',date:'2026-07-10',c:C.b,comments:[]},
+  {id:'m4',ph:'1.1',lbl:'🚀 Campañas Meta Ads LIVE — Argollas + Anillos',desc:'Ambas campañas activas con landings funcionando, formulario CRM y Pixel Meta instalado.',date:'2026-07-15',c:C.r,comments:[]},
+  {id:'m5',ph:'1.2',lbl:'🌐 Sitio Wix Operativo + Dominio Activo',desc:'joyeriacentrosuizo.cl activo, Pixel Meta instalado, catálogo actualizado.',date:'2026-07-30',c:C.b,comments:[]},
+  {id:'m6',ph:'1.3',lbl:'🎁 Google Ads Activo (Bonus)',desc:'Primera campaña activa. Condición: Wix debe estar operativo antes del 30 de julio.',date:'2026-08-10',c:C.g,comments:[]},
+  {id:'m7',ph:'1.3',lbl:'📈 Primera Revisión Resultados Fase 1',desc:'Análisis de CAL y ROAS. Definición de alcance para Fase 2.',date:'2026-08-10',c:C.g,comments:[]},
+];
+
+// ── STATE ─────────────────────────────────────────────────────
+
+const SK='gantt_csj_v3', BK='gantt_csj_bl_v3';
+let state=loadS()||{tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};
+let baseline=loadBL();
+let editMode=false;
+let undoStack=[],redoStack=[];
+
+function dc(x){return JSON.parse(JSON.stringify(x))}
+function loadS(){try{return JSON.parse(localStorage.getItem(SK))}catch{return null}}
+function saveS(){localStorage.setItem(SK,JSON.stringify(state))}
+function loadBL(){try{return JSON.parse(localStorage.getItem(BK))}catch{return null}}
+function saveBL(b){localStorage.setItem(BK,JSON.stringify(b))}
+
+function saveBaseline(){
+  baseline={data:dc(state),at:new Date().toLocaleString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})};
+  saveBL(baseline);
+  document.getElementById('btn-restore').disabled=false;
+  render();showToast('✅ Línea base guardada');
+}
+
+function restoreBaseline(){
+  if(!baseline)return;
+  if(!confirm('¿Restaurar todas las fechas a la línea base guardada?'))return;
+  state=dc(baseline.data);saveS();render();showToast('↩ Línea base restaurada');
+}
+
+function resetToDefault(){
+  if(!confirm('¿Reiniciar todo al estado original?'))return;
+  undoStack=[];redoStack=[];
+  state={tasks:dc(DEF_TASKS),milestones:dc(DEF_MS)};saveS();render();showToast('⟳ Reiniciado');
+}
+
+function pushHistory(){
+  undoStack.push(dc(state));
+  if(undoStack.length>50)undoStack.shift();
+  redoStack=[];
+  updateUndoBtns();
+}
+function undo(){
+  if(!undoStack.length)return;
+  redoStack.push(dc(state));
+  state=undoStack.pop();
+  saveS();render();updateUndoBtns();showToast('↩ Deshecho');
+}
+function redo(){
+  if(!redoStack.length)return;
+  undoStack.push(dc(state));
+  state=redoStack.pop();
+  saveS();render();updateUndoBtns();showToast('↪ Rehecho');
+}
+function updateUndoBtns(){
+  document.getElementById('btn-undo').disabled=!undoStack.length;
+  document.getElementById('btn-redo').disabled=!redoStack.length;
+}
+
+function setEditMode(on){
+  editMode=on;
+  document.querySelectorAll('.dt-in').forEach(e=>on?e.removeAttribute('readonly'):e.setAttribute('readonly',''));
+  document.querySelectorAll('.ms-date-in').forEach(e=>on?e.removeAttribute('readonly'):e.setAttribute('readonly',''));
+  document.querySelectorAll('.cmt-section').forEach(e=>e.classList.toggle('show',on));
+}
+
+// ── DATE UTILS ────────────────────────────────────────────────
+
+const MOS=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+
+function pd(s){const[y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function fd(s){const d=pd(s);return `${d.getDate()} ${MOS[d.getMonth()]} ${d.getFullYear()}`}
+function addD(s,n){const[y,m,d]=s.split('-').map(Number);const dt=new Date(y,m-1,d+n);return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`}
+function diffD(a,b){return Math.round((pd(b)-pd(a))/86400000)}
+
+function getRange(){
+  const all=[...state.tasks.flatMap(t=>[t.start,t.end]),...state.milestones.map(m=>m.date)].sort();
+  return{start:addD(all[0],-1),end:addD(all[all.length-1],2)};
+}
+function pct(s){const r=getRange();const t=diffD(r.start,r.end);return t===0?0:Math.max(0,Math.min(100,diffD(r.start,s)/t*100))}
+
+// ── RENDER ────────────────────────────────────────────────────
+
+function render(){renderGantt();renderMS();updateBLBanner()}
+
+function renderGantt(){
+  const r=getRange();
+  document.getElementById('range-label').textContent=`${fd(r.start)} → ${fd(r.end)}`;
+
+  // Build weeks array
+  const weeks=[];
+  let cur=pd(r.start);
+  const endD=pd(r.end);
+  while(cur<=endD){weeks.push(addD(`${cur.getFullYear()}-${String(cur.getMonth()+1).padStart(2,'0')}-${String(cur.getDate()).padStart(2,'0')}`,0));cur.setDate(cur.getDate()+7)}
+
+  function wkDivs(){
+    return weeks.map((w,i)=>{
+      const l=pct(w);
+      const nw=addD(w,7);
+      const ww=Math.min(100,pct(nw))-l;
+      return `<div class="wk-bg ${i%2?'odd':''}" style="left:${l}%;width:${ww}%"></div>`;
+    }).join('');
+  }
+
+  let html='';
+
+  // Header
+  html+=`<div class="gantt-head-row"><div class="gantt-col-label">Tarea / Período</div><div class="gantt-col-chart"><div class="week-hdr-wrap">`;
+  weeks.forEach(w=>{
+    const l=pct(w);
+    const nw=addD(w,7);
+    const ww=Math.min(100,pct(nw))-l;
+    const d=pd(w);
+    html+=`<div class="week-hdr" style="left:${l}%;width:${ww}%">${d.getDate()}<br>${MOS[d.getMonth()]}</div>`;
+  });
+  html+=`</div></div></div>`;
+
+  // Task rows
+  state.tasks.forEach(t=>{
+    const isP=t.type==='phase';
+    const l=pct(t.start);
+    const w=Math.max(0.5,pct(t.end)-l);
+    let basebar='';
+    if(baseline){
+      const bt=baseline.data.tasks.find(x=>x.id===t.id);
+      if(bt&&(bt.start!==t.start||bt.end!==t.end)){
+        const bl2=pct(bt.start),bw=Math.max(0.5,pct(bt.end)-bl2);
+        basebar=`<div class="g-bar-base ${isP?'ph':''}" style="left:${bl2}%;width:${bw}%;border-color:${t.c}"></div>`;
+      }
+    }
+    html+=`
+    <div class="gantt-row ${isP?'is-phase':''}">
+      <div class="gantt-row-label">
+        <div class="task-lbl ${isP?'phase-lbl':'sub-lbl'}">
+          <span class="phase-dot" style="background:${t.c}"></span>
+          <span>${t.lbl}</span>
+        </div>
+        <div class="date-row" id="dr-${t.id}">
+          <input class="dt-in" type="date" value="${t.start}" ${editMode?'':'readonly'} onchange="updTask('${t.id}','start',this.value)">
+          <span class="dt-sep">→</span>
+          <input class="dt-in" type="date" value="${t.end}" ${editMode?'':'readonly'} onchange="updTask('${t.id}','end',this.value)">
+        </div>
+      </div>
+      <div class="gantt-row-chart">
+        ${wkDivs()}
+        ${basebar}
+        <div class="g-bar ${isP?'ph':''}" style="left:${l}%;width:${w}%;background:${t.c}"></div>
+      </div>
+    </div>`;
+  });
+
+  // Milestone row
+  let diamonds='';
+  state.milestones.forEach(m=>{
+    const mp=pct(m.date);
+    let bd='';
+    if(baseline){
+      const bm=baseline.data.milestones.find(x=>x.id===m.id);
+      if(bm&&bm.date!==m.date){
+        const bp=pct(bm.date);
+        bd=`<div style="position:absolute;top:50%;left:${bp}%;width:10px;height:10px;border-radius:2px;border:2px dashed ${m.c};background:transparent;opacity:.35;transform:translateY(-50%) translateX(-50%) rotate(45deg)"></div>`;
+      }
+    }
+    diamonds+=`${bd}<div class="ms-diamond" title="${m.lbl}" style="left:${mp}%;border-color:${m.c}" onclick="scrollToMS('${m.id}')"></div>`;
+  });
+
+  html+=`
+  <div class="gantt-row" style="background:#f9f9fe">
+    <div class="gantt-row-label"><div class="ms-row-label">Hitos</div></div>
+    <div class="gantt-row-chart">${wkDivs()}${diamonds}</div>
+  </div>`;
+
+  document.getElementById('gantt-chart').innerHTML=html;
+}
+
+function renderMS(){
+  const phLbls={'1.1':'Fase 1.1 — Quick Win','1.2':'Fase 1.2 — Wix','1.3':'Fase 1.3 — Google Ads'};
+  let html='';
+  state.milestones.forEach(m=>{
+    let baseChip='';
+    if(baseline){
+      const bm=baseline.data.milestones.find(x=>x.id===m.id);
+      if(bm&&bm.date!==m.date)baseChip=`<div class="ms-base-chip show">📌 Original: ${fd(bm.date)}</div>`;
+    }
+    const cc=m.comments.length;
+    let cmtsHtml='';
+    m.comments.forEach(c=>{
+      cmtsHtml+=`
+      <div class="cmt-item" id="ci-${c.id}">
+        <div class="cmt-meta">${esc(c.createdAt)}${c.editedAt?' · editado':''}</div>
+        <div class="cmt-text" id="ct-${c.id}">${esc(c.text)}</div>
+        <textarea class="cmt-edit-area" id="ce-${c.id}">${esc(c.text)}</textarea>
+        <div class="cmt-actions">
+          <button class="cmt-btn" onclick="startEdit('${m.id}','${c.id}')">Editar</button>
+          <button class="cmt-btn sv" id="sv-${c.id}" onclick="saveEdit('${m.id}','${c.id}')">Guardar</button>
+          <button class="cmt-btn cn" id="cn-${c.id}" onclick="cancelEdit('${c.id}')">Cancelar</button>
+          <button class="cmt-btn del" onclick="delCmt('${m.id}','${c.id}')">Eliminar</button>
+        </div>
+      </div>`;
+    });
+    html+=`
+    <div class="ms-card" id="ms-${m.id}">
+      <div class="ms-card-top" style="border-left-color:${m.c}">
+        <div class="ms-phase-tag" style="color:${m.c}">${phLbls[m.ph]||m.ph}</div>
+        <div class="ms-name">${m.lbl}</div>
+        <div>
+          <input type="date" class="ms-date-in" value="${m.date}" ${editMode?'':'readonly'}
+            onchange="updMS('${m.id}','date',this.value)">
+          ${baseChip}
+        </div>
+        ${m.desc?`<p class="ms-desc">${m.desc}</p>`:''}
+      </div>
+      <div class="cmt-section ${editMode?'show':''}">
+        <button class="cmt-toggle" onclick="togCmt('${m.id}')">
+          💬 Comentarios
+          <span class="cmt-badge ${cc>0?'show':''}" id="cnt-${m.id}">${cc}</span>
+        </button>
+        <div class="cmt-body" id="cb-${m.id}">
+          <div class="comment-list" id="cl-${m.id}">${cmtsHtml}</div>
+          <div class="add-cmt-row">
+            <textarea class="cmt-input" id="inp-${m.id}" placeholder="Agregar comentario..." rows="2"></textarea>
+            <button class="btn-add-cmt" onclick="addCmt('${m.id}')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('ms-grid').innerHTML=html;
+}
+
+// ── TASK / MILESTONE UPDATES ──────────────────────────────────
+
+function updTask(id,field,val){
+  const t=state.tasks.find(x=>x.id===id);if(!t)return;
+  const yr=parseInt(val.split('-')[0]);if(yr<2020||yr>2035)return;
+  pushHistory();
+  t[field]=val;
+  if(field==='start'&&val>t.end)t.end=val;
+  if(field==='end'&&val<t.start)t.start=val;
+  saveS();renderGantt();
+}
+
+function updMS(id,field,val){
+  const m=state.milestones.find(x=>x.id===id);if(!m)return;
+  pushHistory();
+  m[field]=val;saveS();renderGantt();renderMS();
+}
+
+function scrollToMS(id){
+  const el=document.getElementById('ms-'+id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+// ── COMMENTS ─────────────────────────────────────────────────
+
+function togCmt(mid){
+  const el=document.getElementById('cb-'+mid);
+  if(el)el.classList.toggle('open');
+}
+
+function addCmt(mid){
+  const inp=document.getElementById('inp-'+mid);
+  const txt=inp.value.trim();if(!txt)return;
+  const m=state.milestones.find(x=>x.id===mid);if(!m)return;
+  m.comments.push({
+    id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),
+    text:txt,
+    createdAt:new Date().toLocaleString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}),
+    editedAt:null
+  });
+  saveS();inp.value='';
+  renderMS();
+  setTimeout(()=>{const cb=document.getElementById('cb-'+mid);if(cb)cb.classList.add('open')},40);
+}
+
+function delCmt(mid,cid){
+  if(!confirm('¿Eliminar este comentario?'))return;
+  const m=state.milestones.find(x=>x.id===mid);if(!m)return;
+  m.comments=m.comments.filter(c=>c.id!==cid);saveS();
+  renderMS();
+  setTimeout(()=>{const cb=document.getElementById('cb-'+mid);if(cb)cb.classList.add('open')},40);
+}
+
+function startEdit(mid,cid){
+  const ct=document.getElementById('ct-'+cid);
+  const ce=document.getElementById('ce-'+cid);
+  const sv=document.getElementById('sv-'+cid);
+  const cn=document.getElementById('cn-'+cid);
+  ct.style.display='none';ce.style.display='block';
+  sv.style.display='inline';cn.style.display='inline';
+  ce.focus();ce.dataset.mid=mid;
+}
+
+function saveEdit(mid,cid){
+  const ce=document.getElementById('ce-'+cid);
+  const txt=ce.value.trim();if(!txt)return;
+  const m=state.milestones.find(x=>x.id===mid);if(!m)return;
+  const c=m.comments.find(x=>x.id===cid);if(!c)return;
+  c.text=txt;c.editedAt=new Date().toLocaleString('es-CL',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'});
+  saveS();renderMS();
+  setTimeout(()=>{const cb=document.getElementById('cb-'+mid);if(cb)cb.classList.add('open')},40);
+}
+
+function cancelEdit(cid){
+  document.getElementById('ct-'+cid).style.display='';
+  document.getElementById('ce-'+cid).style.display='none';
+  document.getElementById('sv-'+cid).style.display='none';
+  document.getElementById('cn-'+cid).style.display='none';
+}
+
+// ── BASELINE BANNER ───────────────────────────────────────────
+
+function updateBLBanner(){
+  const banner=document.getElementById('bl-banner');
+  const rb=document.getElementById('btn-restore');
+  if(baseline){
+    banner.classList.remove('hidden');
+    document.getElementById('bl-date').textContent=baseline.at;
+    let d=0;
+    state.tasks.forEach(t=>{const bt=baseline.data.tasks.find(x=>x.id===t.id);if(bt&&(bt.start!==t.start||bt.end!==t.end))d++});
+    state.milestones.forEach(m=>{const bm=baseline.data.milestones.find(x=>x.id===m.id);if(bm&&bm.date!==m.date)d++});
+    document.getElementById('bl-diff').textContent=d===0?'✅ Sin cambios':`⚠️ ${d} tarea(s) modificada(s)`;
+    rb.disabled=false;
+  }else{
+    banner.classList.add('hidden');
+    rb.disabled=true;
+  }
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.opacity='1';
+  clearTimeout(t._t);t._t=setTimeout(()=>t.style.opacity='0',2500);
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+render();
+updateUndoBtns();
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&!e.shiftKey&&e.key==='z'){e.preventDefault();undo();}
+  if((e.ctrlKey||e.metaKey)&&(e.key==='y'||(e.shiftKey&&e.key==='z'))){e.preventDefault();redo();}
+});
+</script>
+</body>
+</html>

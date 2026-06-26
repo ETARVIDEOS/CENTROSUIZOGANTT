@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta Gantt — Plan Digital Fase 1 | Centro Suizo Joyas</title>
+<style>
+  html { overflow-x: hidden; }
+  body {
+    overflow-x: hidden;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f7f8fc;
+    color: #1a1a2e;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+    color: #fff;
+    padding: 36px 40px 28px;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .brand {
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.6;
+  }
+  .header h1 {
+    margin: 12px 0 4px;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  .header-sub {
+    font-size: 14px;
+    opacity: 0.7;
+    margin: 0;
+  }
+  .badge-fase {
+    background: #e94560;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .header-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .header-meta-item {
+    font-size: 13px;
+    opacity: 0.75;
+  }
+  .header-meta-item strong {
+    display: block;
+    font-size: 16px;
+    opacity: 1;
+    color: #fff;
+  }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #888;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+
+  /* ── GANTT ── */
+  .gantt-wrap {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    padding: 28px 24px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .gantt-legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    color: #555;
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  .gantt-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  .gantt-table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #aaa;
+    font-weight: 600;
+    padding: 6px 8px;
+    text-align: left;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  .gantt-table th.week {
+    text-align: center;
+    width: 60px;
+  }
+  .gantt-table td {
+    padding: 5px 8px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f5f5f5;
+  }
+  .task-name {
+    font-size: 13px;
+    color: #333;
+    white-space: nowrap;
+    min-width: 200px;
+  }
+  .task-name.phase {
+    font-weight: 700;
+    color: #1a1a2e;
+    font-size: 14px;
+  }
+  .task-name.sub {
+    padding-left: 16px;
+    color: #555;
+  }
+  .task-dates {
+    font-size: 11px;
+    color: #999;
+    white-space: nowrap;
+    min-width: 120px;
+  }
+  .gantt-bar-cell {
+    width: 100%;
+    min-width: 300px;
+    padding: 4px 0;
+  }
+  .gantt-track {
+    position: relative;
+    height: 24px;
+    display: flex;
+    align-items: center;
+  }
+  .gantt-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+  }
+  .week-divider {
+    flex: 1;
+    border-right: 1px dashed #eee;
+  }
+  .week-divider:last-child { border-right: none; }
+
+  .bar {
+    position: absolute;
+    height: 16px;
+    border-radius: 4px;
+    top: 4px;
+  }
+  .bar.fase11 { background: linear-gradient(90deg, #e94560, #c23152); }
+  .bar.fase12 { background: linear-gradient(90deg, #0f3460, #1a5276); }
+  .bar.fase13 { background: linear-gradient(90deg, #27ae60, #1e8449); }
+  .bar.sub11  { background: #f4a7b4; border-radius: 3px; height: 12px; top: 6px; }
+  .bar.sub12  { background: #6fa8dc; border-radius: 3px; height: 12px; top: 6px; }
+  .bar.sub13  { background: #93c47d; border-radius: 3px; height: 12px; top: 6px; }
+
+  .milestone {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border: 3px solid #e94560;
+    border-radius: 50%;
+    top: 5px;
+    transform: translateX(-50%);
+    z-index: 2;
+    box-shadow: 0 0 0 2px rgba(233,69,96,0.2);
+  }
+  .milestone.green {
+    border-color: #27ae60;
+    box-shadow: 0 0 0 2px rgba(39,174,96,0.2);
+  }
+  .milestone.blue {
+    border-color: #0f3460;
+    box-shadow: 0 0 0 2px rgba(15,52,96,0.2);
+  }
+
+  .week-headers {
+    display: flex;
+    margin-left: 0;
+    gap: 0;
+    margin-bottom: 4px;
+  }
+
+  /* ── HITOS ── */
+  .hitos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .hito-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 18px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    border-left: 4px solid #e94560;
+    position: relative;
+    overflow: hidden;
+  }
+  .hito-card.blue { border-left-color: #0f3460; }
+  .hito-card.green { border-left-color: #27ae60; }
+  .hito-date {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #e94560;
+    margin-bottom: 6px;
+  }
+  .hito-card.blue .hito-date { color: #0f3460; }
+  .hito-card.green .hito-date { color: #27ae60; }
+  .hito-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 4px;
+    line-height: 1.3;
+  }
+  .hito-desc {
+    font-size: 12px;
+    color: #777;
+    margin: 0;
+    line-height: 1.5;
+  }
+  .hito-icon {
+    position: absolute;
+    right: 14px;
+    top: 14px;
+    font-size: 22px;
+    opacity: 0.15;
+  }
+
+  /* ── FASES DETALLE ── */
+  .fase-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .fase-header {
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .fase-num {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #e94560;
+    margin-bottom: 4px;
+  }
+  .fase-card:nth-child(2) .fase-num { color: #0f3460; }
+  .fase-card:nth-child(3) .fase-num { color: #27ae60; }
+  .fase-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 0 0 4px;
+  }
+  .fase-period {
+    font-size: 13px;
+    color: #888;
+  }
+  .fase-tag {
+    background: #fff0f3;
+    color: #e94560;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    border: 1px solid #ffc8d3;
+  }
+  .fase-card:nth-child(2) .fase-tag { background: #e8edf5; color: #0f3460; border-color: #c0cfe0; }
+  .fase-card:nth-child(3) .fase-tag { background: #eafaf1; color: #27ae60; border-color: #b7e8c9; }
+  .fase-body { padding: 20px 24px; }
+  .entregable-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .entregable-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f7f7f7;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+  }
+  .entregable-list li:last-child { border-bottom: none; }
+  .check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid #e94560;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #e94560;
+    margin-top: 1px;
+  }
+  .fase-card:nth-child(2) .check { border-color: #0f3460; color: #0f3460; }
+  .fase-card:nth-child(3) .check { border-color: #27ae60; color: #27ae60; }
+  .ent-content strong {
+    display: block;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+  .ent-content span {
+    font-size: 12px;
+    color: #888;
+  }
+
+  /* Capacitación highlight */
+  .cap-box {
+    background: linear-gradient(135deg, #fff0f3, #fff8f9);
+    border: 1px solid #ffd0da;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .cap-icon { font-size: 24px; flex-shrink: 0; }
+  .cap-text { font-size: 13px; color: #555; }
+  .cap-text strong { color: #1a1a2e; display: block; font-size: 14px; }
+
+  /* ── NOTA BONUS ── */
+  .bonus-note {
+    background: linear-gradient(135deg, #eafaf1, #d5f5e3);
+    border: 1px solid #82e0aa;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: -8px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: #1e8449;
+  }
+  .bonus-note strong { color: #145a32; }
+
+  /* ── FASES FUTURAS ── */
+  .futuras-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 40px;
+  }
+  .futura-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    border-top: 3px solid #ddd;
+    opacity: 0.7;
+  }
+  .futura-num { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #aaa; font-weight: 700; }
+  .futura-title { font-size: 14px; font-weight: 700; color: #555; margin: 4px 0 6px; }
+  .futura-desc { font-size: 12px; color: #999; line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 24px 20px;
+    border-top: 1px solid #eee;
+    background: #fff;
+    font-size: 12px;
+    color: #aaa;
+  }
+  .footer strong { color: #555; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .header { padding: 24px 20px 20px; }
+    .hitos-grid { grid-template-columns: 1fr; }
+    .futuras-grid { grid-template-columns: 1fr; }
+    .gantt-wrap { padding: 16px 12px; }
+    .fase-body { padding: 16px; }
+    .fase-header { padding: 16px; }
+  }
+  @media (max-width: 480px) {
+    .header-meta { gap: 16px; }
+    .hitos-grid { grid-template-columns: 1fr; }
+    .futuras-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ HEADER ═══════════ -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <div class="brand">Krea &amp; Cuenta SpA — Plan Digital</div>
+      <h1>Carta Gantt — Fase 1</h1>
+      <p class="header-sub">Centro Suizo Joyas · Iquique, Chile</p>
+    </div>
+    <span class="badge-fase">Julio – Agosto 2026</span>
+  </div>
+  <div class="header-meta">
+    <div class="header-meta-item">
+      <strong>Jordan Bruna Opazo</strong>
+      Cliente
+    </div>
+    <div class="header-meta-item">
+      <strong>1 Jul — 10 Ago 2026</strong>
+      Período
+    </div>
+    <div class="header-meta-item">
+      <strong>$945.000 neto</strong>
+      Inversión Fase 1
+    </div>
+    <div class="header-meta-item">
+      <strong>3 Sub-fases</strong>
+      Alcance
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ MAIN ═══════════ -->
+<div class="main">
+
+  <!-- GANTT VISUAL -->
+  <p class="section-label">Línea de Tiempo</p>
+  <div class="gantt-wrap">
+    <div class="gantt-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#e94560"></div> Fase 1.1 — Quick Win</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#0f3460"></div> Fase 1.2 — Wix + Pixel</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#27ae60"></div> Fase 1.3 — Google Ads (Bonus)</div>
+      <div class="legend-item"><div class="legend-dot" style="border-radius:50%; background:#fff; border: 2px solid #e94560; box-sizing:border-box;"></div> Hito clave</div>
+    </div>
+
+    <table class="gantt-table">
+      <thead>
+        <tr>
+          <th style="min-width:200px">Tarea</th>
+          <th style="min-width:110px">Período</th>
+          <th class="gantt-bar-cell">
+            <!-- Semanas: 1Jul - 10Ago = ~6 semanas -->
+            <div style="display:flex; font-size:10px; color:#bbb; font-weight:600; letter-spacing:1px; text-align:center;">
+              <div style="flex:1">SEM 1<br><span style="font-weight:400">Jul 1-7</span></div>
+              <div style="flex:1">SEM 2<br><span style="font-weight:400">Jul 8-14</span></div>
+              <div style="flex:1">SEM 3<br><span style="font-weight:400">Jul 15-21</span></div>
+              <div style="flex:1">SEM 4<br><span style="font-weight:400">Jul 22-28</span></div>
+              <div style="flex:1">SEM 5<br><span style="font-weight:400">Jul 29-4A</span></div>
+              <div style="flex:1">SEM 6<br><span style="font-weight:400">Ago 4-10</span></div>
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- FASE 1.1 -->
+        <tr>
+          <td class="task-name phase">⚡ Fase 1.1 — Quick Win</td>
+          <td class="task-dates">1–15 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg">
+                <div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div>
+                <div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div>
+              </div>
+              <div class="bar fase11" style="left:0%; width:34%"></div>
+              <!-- Hito: campañas live Jul 15 -->
+              <div class="milestone" style="left:34%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Landing page Argollas (GitHub + CF)</td>
+          <td class="task-dates">1–5 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub11" style="left:0%; width:12%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Landing page Anillos (GitHub + CF)</td>
+          <td class="task-dates">1–5 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub11" style="left:0%; width:12%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Forms CRM + Meta Pixel en landings</td>
+          <td class="task-dates">5–8 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub11" style="left:12%; width:9%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Guión emocional WhatsApp</td>
+          <td class="task-dates">1–7 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub11" style="left:0%; width:17%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">🎓 Capacitación online (Miérc. 8 Jul)</td>
+          <td class="task-dates">8 Jul 9AM</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="milestone" style="left:20%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Campañas Meta Ads en vivo</td>
+          <td class="task-dates">8–15 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub11" style="left:20%; width:14%"></div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- SEPARADOR -->
+        <tr><td colspan="3" style="padding:6px 0; border:none;"></td></tr>
+
+        <!-- FASE 1.2 -->
+        <tr>
+          <td class="task-name phase">🌐 Fase 1.2 — Wix + Pixel Meta</td>
+          <td class="task-dates">15–30 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar fase12" style="left:34%; width:33%"></div>
+              <!-- Hito: Wix operativo Jul 30 -->
+              <div class="milestone blue" style="left:67%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Excel enviado a Jordan</td>
+          <td class="task-dates">~12 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="milestone blue" style="left:27%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Levantamiento Wix + Pixel Meta</td>
+          <td class="task-dates">15–22 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub12" style="left:34%; width:18%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Actualización catálogo (depende de Jordan)</td>
+          <td class="task-dates">22–30 Jul</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub12" style="left:52%; width:15%"></div>
+            </div>
+          </td>
+        </tr>
+
+        <!-- SEPARADOR -->
+        <tr><td colspan="3" style="padding:6px 0; border:none;"></td></tr>
+
+        <!-- FASE 1.3 BONUS -->
+        <tr>
+          <td class="task-name phase">🎁 Fase 1.3 — Google Ads <em style="font-weight:400;font-size:12px;color:#27ae60">(Bonus)</em></td>
+          <td class="task-dates">30 Jul–10 Ago</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar fase13" style="left:67%; width:33%"></div>
+              <div class="milestone green" style="left:100%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Configuración Google Ads</td>
+          <td class="task-dates">30 Jul–5 Ago</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub13" style="left:67%; width:18%"></div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="task-name sub">Campaña Google Ads activa</td>
+          <td class="task-dates">5–10 Ago</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-bg"><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div><div class="week-divider"></div></div>
+              <div class="bar sub13" style="left:85%; width:15%"></div>
+            </div>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div><!-- /gantt-wrap -->
+
+  <!-- HITOS CLAVE -->
+  <p class="section-label">Hitos Clave</p>
+  <div class="hitos-grid">
+    <div class="hito-card">
+      <div class="hito-icon">🎓</div>
+      <div class="hito-date">Miércoles 8 Jul · 9:00 AM</div>
+      <h3 class="hito-title">Capacitación Online</h3>
+      <p class="hito-desc">Máximo 4 dispositivos. Instalación Marcador PC. Guión WhatsApp incluido.</p>
+    </div>
+    <div class="hito-card">
+      <div class="hito-icon">🚀</div>
+      <div class="hito-date">15 Julio 2026</div>
+      <h3 class="hito-title">Campañas Meta Ads Live</h3>
+      <p class="hito-desc">Argollas Matrimonio + Anillos Compromiso activas. Landings funcionando con CRM.</p>
+    </div>
+    <div class="hito-card blue">
+      <div class="hito-icon">📊</div>
+      <div class="hito-date">~12 Julio 2026</div>
+      <h3 class="hito-title">Excel enviado a Jordan</h3>
+      <p class="hito-desc">Planilla para actualizar precios y fichas de los 310 productos. Fase 1.2 depende de la respuesta del equipo.</p>
+    </div>
+    <div class="hito-card blue">
+      <div class="hito-icon">🌐</div>
+      <div class="hito-date">30 Julio 2026</div>
+      <h3 class="hito-title">Wix Operativo</h3>
+      <p class="hito-desc">Pixel Meta instalado, catálogo actualizado, dominio joyeriacentrosuizo.cl activo.</p>
+    </div>
+    <div class="hito-card green">
+      <div class="hito-icon">🎁</div>
+      <div class="hito-date">10 Agosto 2026</div>
+      <h3 class="hito-title">Google Ads (Bonus)</h3>
+      <p class="hito-desc">Primera campaña Google Ads activa. Solo si el sitio Wix está operacional.</p>
+    </div>
+    <div class="hito-card green">
+      <div class="hito-icon">📈</div>
+      <div class="hito-date">Agosto 2026</div>
+      <h3 class="hito-title">Primera Revisión</h3>
+      <p class="hito-desc">Reporte de resultados Fase 1 y definición de alcance Fase 2.</p>
+    </div>
+  </div>
+
+  <!-- ═══ DETALLE FASES ═══ -->
+  <p class="section-label">Detalle de Sub-fases</p>
+
+  <!-- FASE 1.1 -->
+  <div class="fase-card">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 1.1 · 1 al 15 de Julio</div>
+        <h2 class="fase-title">⚡ Quick Win — Meta Ads</h2>
+        <div class="fase-period">Objetivo: Clientes al local de Iquique con intención de compra</div>
+      </div>
+      <span class="fase-tag">$400.000</span>
+    </div>
+    <div class="fase-body">
+      <ul class="entregable-list">
+        <li>
+          <div class="check">1</div>
+          <div class="ent-content">
+            <strong>Landing Page — Argollas Matrimonio</strong>
+            <span>HTML alojado en GitHub + Cloudflare Pages · Form conectado a CRM SuperSonics · Meta Pixel instalado · Copy emocional orientado a compra en local</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">2</div>
+          <div class="ent-content">
+            <strong>Landing Page — Anillos de Compromiso</strong>
+            <span>Misma arquitectura que Argollas · Landing independiente · Form y Pixel propios · Optimizada para el segmento</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">3</div>
+          <div class="ent-content">
+            <strong>Campaña Meta Ads — Argollas Matrimonio</strong>
+            <span>Configuración en Meta Business · Presupuesto ~$600K CLP · Segmentación Iquique · Objetivo: tráfico al local</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">4</div>
+          <div class="ent-content">
+            <strong>Campaña Meta Ads — Anillos de Compromiso</strong>
+            <span>Configuración en Meta Business · Presupuesto ~$250K CLP · Segmentación Iquique · Objetivo: tráfico al local</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">5</div>
+          <div class="ent-content">
+            <strong>Guión de Ventas Emocional WhatsApp</strong>
+            <span>Script para atender leads que llegan del formulario · Orientado a cerrar visita al local · Entrega: 7 Julio</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">6</div>
+          <div class="ent-content">
+            <strong>Registro en CRM SuperSonics</strong>
+            <span>Todos los leads de ambas landings quedan registrados automáticamente en SuperSonics ONE de Jordan</span>
+          </div>
+        </li>
+      </ul>
+      <div class="cap-box">
+        <div class="cap-icon">🎓</div>
+        <div class="cap-text">
+          <strong>Capacitación Online · Miércoles 8 de Julio · 9:00 AM</strong>
+          Máx. 4 dispositivos simultáneos · Incluye instalación Marcador PC · Uso del CRM y WhatsApp script
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FASE 1.2 -->
+  <div class="fase-card">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 1.2 · 15 al 30 de Julio</div>
+        <h2 class="fase-title">🌐 Levantamiento Wix + Pixel Meta</h2>
+        <div class="fase-period">⚠️ Depende de respuesta del equipo de Jordan al Excel (~12 julio)</div>
+      </div>
+      <span class="fase-tag">$180.000</span>
+    </div>
+    <div class="fase-body">
+      <ul class="entregable-list">
+        <li>
+          <div class="check">1</div>
+          <div class="ent-content">
+            <strong>Excel de catálogo enviado a Jordan (~12 Julio)</strong>
+            <span>Planilla con los 310 productos para que el equipo actualice precios y descripciones · Fecha límite respuesta: 19 Julio</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">2</div>
+          <div class="ent-content">
+            <strong>Instalación Pixel Meta en Wix</strong>
+            <span>Configuración nativa Wix → Marketing → Facebook Ads · Verificación de eventos en Meta Business</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">3</div>
+          <div class="ent-content">
+            <strong>Dominio joyeriacentrosuizo.cl</strong>
+            <span>Registro en NIC Chile · Conexión al sitio Wix · Requiere upgrade de plan Wix</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">4</div>
+          <div class="ent-content">
+            <strong>Actualización catálogo Wix (máx. 310 productos)</strong>
+            <span>Carga masiva vía CSV · Precios, fichas, fotos actualizadas · Colecciones: Argollas Bebé, Anillos Compromiso, Aros Adulto</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">5</div>
+          <div class="ent-content">
+            <strong>Campaña e-commerce — Aros Bebé / Cadenas</strong>
+            <span>Máx. 4 productos · Campaña en Meta Ads con catálogo Wix conectado · Objetivo: venta online</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- FASE 1.3 -->
+  <div class="fase-card">
+    <div class="fase-header">
+      <div>
+        <div class="fase-num">Fase 1.3 · 30 Julio – 10 Agosto (Bonus)</div>
+        <h2 class="fase-title">🎁 Google Ads</h2>
+        <div class="fase-period">Solo se ejecuta si el sitio Wix está operacional al 30 de julio</div>
+      </div>
+      <span class="fase-tag">BONUS incluido</span>
+    </div>
+    <div class="fase-body">
+      <ul class="entregable-list">
+        <li>
+          <div class="check">1</div>
+          <div class="ent-content">
+            <strong>Configuración Google Ads</strong>
+            <span>Cuenta, conversiones, extensiones · Campaña Search para Iquique · Palabras clave: joyería, argollas matrimonio, anillos compromiso Iquique</span>
+          </div>
+        </li>
+        <li>
+          <div class="check">2</div>
+          <div class="ent-content">
+            <strong>Primera campaña Google Ads activa</strong>
+            <span>Mínimo 1 campaña funcionando antes del 10 de agosto · Seguimiento de conversiones integrado</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="bonus-note">
+    <strong>⚠️ Condición Fase 1.3:</strong> La campaña Google Ads requiere que el sitio Wix esté completamente operacional (dominio activo, Pixel instalado, catálogo actualizado). Si la Fase 1.2 se retrasa por demora en la respuesta del equipo de Jordan al Excel, la Fase 1.3 se reprograma automáticamente.
+  </div>
+
+  <!-- FASES FUTURAS -->
+  <p class="section-label">Roadmap — Fases Futuras (no incluidas en esta propuesta)</p>
+  <div class="futuras-grid">
+    <div class="futura-card">
+      <div class="futura-num">Fase 2</div>
+      <div class="futura-title">CRM + Campañas Combinadas</div>
+      <div class="futura-desc">Auditoría CRM · Centralización de datos · Campañas Google + Meta combinadas · Capacitación avanzada</div>
+    </div>
+    <div class="futura-card">
+      <div class="futura-num">Fase 3</div>
+      <div class="futura-title">Automatización IA</div>
+      <div class="futura-desc">Agente de voz IA para leads · Claude conectado a Meta/Google Ads · Dashboard en tiempo real</div>
+    </div>
+    <div class="futura-card">
+      <div class="futura-num">Fase 4</div>
+      <div class="futura-title">Expansión</div>
+      <div class="futura-desc">Replicar el modelo digital a otros negocios del grupo Jordan</div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="footer">
+  <strong>Krea &amp; Cuenta SpA</strong> · kreaycuenta@gmail.com · Preparado para Jordan Bruna Opazo — Centro Suizo Joyas · Junio 2026<br>
+  Este documento es confidencial y de uso exclusivo del cliente.
+</div>
+
+</body>
+</html>

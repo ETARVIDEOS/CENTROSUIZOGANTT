@@ -1,0 +1,340 @@
+════════════════════════════════════════════════════════════
+  MANUAL TÉCNICO: LANDING PAGES EN CLOUDFLARE PAGES
+  Proyecto: Centro Suizo Joyas | Krea & Cuenta SpA
+  Preparado por: Edgar Boyé
+════════════════════════════════════════════════════════════
+
+REQUISITOS PREVIOS
+──────────────────
+□ Cuenta en GitHub (github.com) → GRATIS
+□ Cuenta en Cloudflare (cloudflare.com) → GRATIS
+□ Git instalado en tu PC (git-scm.com/downloads)
+□ VS Code (opcional, para editar HTML)
+□ Node.js no es necesario para sitios estáticos
+
+════════════════════════════════════════════════════════════
+PASO 1 — CREAR EL REPOSITORIO EN GITHUB
+════════════════════════════════════════════════════════════
+
+1.1  Ir a https://github.com/new
+
+1.2  Completar el formulario:
+     - Repository name: landing-argollas-matrimonio
+       (o landing-anillos-compromiso para la segunda)
+     - Description: Landing page campaña Meta Ads
+     - Visibility: Public ← IMPORTANTE, debe ser público
+       para que Cloudflare lo detecte gratis
+     - ✓ Add a README file (marcar)
+
+1.3  Clic en "Create repository"
+
+1.4  Repetir para la segunda landing (anillos)
+
+════════════════════════════════════════════════════════════
+PASO 2 — SUBIR LOS ARCHIVOS DE LA LANDING PAGE
+════════════════════════════════════════════════════════════
+
+OPCIÓN A — Directo desde la web de GitHub (más fácil)
+─────────────────────────────────────────────────────
+2.A.1  Entrar al repositorio recién creado en GitHub
+
+2.A.2  Clic en "Add file" → "Upload files"
+
+2.A.3  Arrastrar los archivos:
+       - index.html   ← el archivo HTML principal
+       - (si tienes) style.css, script.js, imágenes
+
+2.A.4  En "Commit changes" escribir:
+       "Primera versión landing argollas"
+
+2.A.5  Clic "Commit changes"
+
+OPCIÓN B — Desde terminal con Git (para actualizaciones frecuentes)
+────────────────────────────────────────────────────────────────────
+2.B.1  Clonar el repositorio:
+       git clone https://github.com/TU_USUARIO/landing-argollas-matrimonio
+
+2.B.2  Copiar tus archivos HTML/CSS/JS dentro de la carpeta clonada
+
+2.B.3  Subir los cambios:
+       cd landing-argollas-matrimonio
+       git add .
+       git commit -m "Agrego landing page argollas"
+       git push origin main
+
+ESTRUCTURA MÍNIMA DE ARCHIVOS
+──────────────────────────────
+landing-argollas-matrimonio/
+├── index.html     ← OBLIGATORIO (Cloudflare sirve este por defecto)
+├── style.css      (opcional si está dentro del HTML)
+└── images/        (opcional)
+    └── logo.jpg
+
+IMPORTANTE: El archivo principal DEBE llamarse index.html
+Cloudflare Pages lo detecta automáticamente.
+
+════════════════════════════════════════════════════════════
+PASO 3 — CONECTAR CLOUDFLARE PAGES CON GITHUB
+════════════════════════════════════════════════════════════
+
+3.1  Ir a https://dash.cloudflare.com
+     Iniciar sesión con tu cuenta Cloudflare
+
+3.2  En el menú lateral: "Workers & Pages"
+
+3.3  Clic en el botón azul "Create application"
+
+3.4  Seleccionar la pestaña "Pages"
+
+3.5  Clic en "Connect to Git"
+
+3.6  Aparece pantalla "Connect a Git provider"
+     → Clic en "Connect GitHub"
+     → Se abre una ventana de GitHub pidiendo autorización
+     → Clic "Authorize Cloudflare Pages"
+     → Si pide elegir repositorios: seleccionar los repos de las landings
+
+3.7  De vuelta en Cloudflare:
+     - Aparece lista de tus repositorios de GitHub
+     - Seleccionar: landing-argollas-matrimonio
+     - Clic "Begin setup"
+
+════════════════════════════════════════════════════════════
+PASO 4 — CONFIGURAR EL BUILD (SITIO ESTÁTICO)
+════════════════════════════════════════════════════════════
+
+En la pantalla "Set up builds and deployments":
+
+4.1  Project name:
+     landing-argollas-matrimonio
+     (este nombre define la URL: nombre.pages.dev)
+
+4.2  Production branch:
+     main
+     (o master, lo que use tu repo)
+
+4.3  Build settings — Para HTML puro (SIN frameworks):
+     ┌─────────────────────────────────────────────┐
+     │ Framework preset: None                       │
+     │ Build command:    (DEJAR EN BLANCO)          │
+     │ Build output dir: / (o dejar en blanco)      │
+     └─────────────────────────────────────────────┘
+
+     ⚠️ NO completar "Build command" si es HTML vanilla.
+     Si lo completas con algo incorrecto, el deploy falla.
+
+4.4  Clic "Save and Deploy"
+
+4.5  Cloudflare comienza el deploy.
+     Esperar ~30-60 segundos.
+     Verás logs en tiempo real.
+
+════════════════════════════════════════════════════════════
+PASO 5 — VERIFICAR EL DEPLOY
+════════════════════════════════════════════════════════════
+
+5.1  Cuando aparezca "Success" con check verde:
+     Tu landing está en: https://landing-argollas-matrimonio.pages.dev
+
+5.2  Abrir esa URL en el navegador para confirmar que carga bien
+
+5.3  Probar en móvil (es donde vendrán los leads de Meta Ads)
+
+5.4  IMPORTANTE: Cada vez que hagas push a GitHub (git push),
+     Cloudflare redespliega automáticamente en ~30 segundos.
+     No tienes que hacer nada manual.
+
+════════════════════════════════════════════════════════════
+PASO 6 — AGREGAR DOMINIO PERSONALIZADO (OPCIONAL)
+════════════════════════════════════════════════════════════
+
+Si quieres que la landing use un subdominio de tu dominio
+(ej: argollas.joyeriacentrosuizo.cl en lugar de .pages.dev):
+
+6.1  En la página del proyecto en Cloudflare Pages:
+     → Pestaña "Custom domains"
+     → "Set up a custom domain"
+
+6.2  Escribir el subdominio:
+     argollas.joyeriacentrosuizo.cl
+
+6.3  Cloudflare genera el registro DNS automáticamente
+     (si el dominio está en Cloudflare, se configura solo)
+
+6.4  Si el dominio está en otro registrador (NIC Chile):
+     → Agregar el CNAME record manualmente:
+       Nombre:  argollas
+       Tipo:    CNAME
+       Destino: landing-argollas-matrimonio.pages.dev
+
+════════════════════════════════════════════════════════════
+PASO 7 — AGREGAR META PIXEL A LA LANDING
+════════════════════════════════════════════════════════════
+
+7.1  Ir a Meta Business Suite → Events Manager
+     → Seleccionar tu Pixel
+     → "Set up" → "Install code manually"
+     → Copiar el código del Pixel (se ve así):
+
+     <!-- Meta Pixel Code -->
+     <script>
+     !function(f,b,e,v,n,t,s)...
+     fbq('init', 'TU_PIXEL_ID_AQUI');
+     fbq('track', 'PageView');
+     </script>
+
+7.2  En tu index.html, pegar ese código DENTRO de <head>:
+
+     <head>
+       <meta charset="UTF-8">
+       <!-- Meta Pixel Code -->
+       <script>
+         !function(f,b,e,v,n,t,s)...
+         fbq('init', '123456789');
+         fbq('track', 'PageView');
+       </script>
+       <!-- End Meta Pixel Code -->
+       <title>Argollas de Matrimonio | Centro Suizo Joyas</title>
+     </head>
+
+7.3  Para trackear cuando el usuario llena el formulario:
+     Agregar este evento en el botón de envío:
+
+     <button onclick="fbq('track', 'Lead')">Quiero información</button>
+
+7.4  Hacer git push → Cloudflare redespliega automáticamente
+
+7.5  Verificar en Meta Pixel Helper (extensión Chrome) que
+     el pixel se dispara al cargar la landing
+
+════════════════════════════════════════════════════════════
+PASO 8 — AGREGAR FORMULARIO SUPERSONICS CRM
+════════════════════════════════════════════════════════════
+
+EMBED CODE CONFIRMADO (obtenido el 26-Jun-2026, Form 1 de Jordan):
+
+8.1  Crear formulario específico por campaña:
+     → SuperSonics → Sitios → Formularios → "+ Crear formulario"
+     → Nombre: "Argollas Matrimonio - Landing"
+     → Campos: Nombre completo, WhatsApp (Phone), Email
+     → Guardar
+
+8.2  Obtener el embed code:
+     → Abrir formulario → clic "Integrar" (arriba a la derecha)
+     → Tipo: "Inline" | Activador: "Always show"
+     → Pestaña izquierda: "Incrustar código"
+     → Copiar el código generado
+
+8.3  Estructura EXACTA del embed (ejemplo real Form 1 de Jordan):
+
+     <!-- SuperSonics Form Embed -->
+     <div style="height:740px; width:100%">
+       <iframe
+           src="https://api.supersonics.one/widget/form/Olr0hxVXrWqvv0C88Ykd"
+           style="width:100%;height:100%;border:none;border-radius:8px"
+           id="inline-Olr0hxVXrWqvv0C88Ykd"
+           data-layout="{'id':'INLINE'}"
+           data-trigger-type="alwaysShow"
+           data-trigger-value=""
+           data-activation-type="alwaysActivated"
+           data-activation-value=""
+           data-deactivation-type="neverDeactivate"
+           data-deactivation-value=""
+           data-form-name="Form 1"
+           data-height="740"
+           data-layout-iframe-id="inline-Olr0hxVXrWqvv0C88Ykd"
+           data-form-id="Olr0hxVXrWqvv0C88Ykd"
+           title="Form 1">
+       </iframe>
+     </div>
+     <script src="https://api.supersonics.one/js/form_embed.js"></script>
+     <!-- Fin SuperSonics Form -->
+
+     IMPORTANTE:
+     - Reemplazar "Olr0hxVXrWqvv0C88Ykd" con el ID del nuevo formulario
+     - El div contenedor necesita height explícito (740px por defecto)
+     - El <script> va UNA sola vez en la página (no repetir)
+
+8.4  Pegar ese bloque en index.html donde va el formulario
+
+8.5  Hacer git push → Cloudflare redespliega automáticamente
+
+════════════════════════════════════════════════════════════
+PASO 9 — ACTUALIZAR LA LANDING (FLUJO HABITUAL)
+════════════════════════════════════════════════════════════
+
+Cada vez que necesites cambiar texto, fotos o precios:
+
+OPCIÓN A — GitHub web (sin terminal):
+1. Ir al repo en github.com
+2. Clic en index.html
+3. Clic en el ícono del lápiz (Edit)
+4. Hacer cambios
+5. Clic "Commit changes"
+6. Esperar 30-60 seg → Cloudflare actualiza automático
+
+OPCIÓN B — Terminal Git (más rápido para varios archivos):
+1. git pull origin main
+2. Editar archivos en VS Code
+3. git add .
+4. git commit -m "Actualizo precio argollas"
+5. git push origin main
+→ Deploy automático en ~30 seg
+
+════════════════════════════════════════════════════════════
+RESUMEN URLS DE TUS PROYECTOS
+════════════════════════════════════════════════════════════
+
+Landing Argollas:
+  GitHub:     https://github.com/TU_USUARIO/landing-argollas-matrimonio
+  Cloudflare: https://landing-argollas-matrimonio.pages.dev
+
+Landing Anillos:
+  GitHub:     https://github.com/TU_USUARIO/landing-anillos-compromiso
+  Cloudflare: https://landing-anillos-compromiso.pages.dev
+
+Panel Cloudflare: https://dash.cloudflare.com
+→ Workers & Pages → Ver todos los proyectos
+
+════════════════════════════════════════════════════════════
+VENTAJAS DE CLOUDFLARE PAGES vs NETLIFY
+════════════════════════════════════════════════════════════
+
+Cloudflare Pages (ELEGIDO):
+✓ Sin límite de ancho de banda en plan gratuito
+✓ CDN global (carga rápida desde Chile)
+✓ SSL automático (HTTPS)
+✓ Deploy automático desde GitHub
+✓ Sin problemas con tráfico alto de Meta Ads
+✓ 500 deploys/mes gratis
+✓ Dominios personalizados gratis
+
+Netlify (NO elegido para este proyecto):
+✗ Límite 100GB/mes en plan gratuito
+✗ Con campañas Meta Ads activas, puede superar el límite
+  y Netlify cobra extra o bloquea el sitio
+
+════════════════════════════════════════════════════════════
+CHECKLIST ANTES DE ACTIVAR LAS CAMPAÑAS META ADS
+════════════════════════════════════════════════════════════
+
+□ Landing carga en https://tu-proyecto.pages.dev
+□ Landing carga en móvil (viewport 375px)
+□ Meta Pixel instalado y disparando (verificar con Pixel Helper)
+□ Formulario SuperSonics funcionando y enviando a CRM
+□ Evento fbq('track', 'Lead') se dispara al enviar formulario
+□ URL de landing lista para pegar en el anuncio de Meta Ads
+□ Botón de WhatsApp en la landing con número correcto
+□ Tiempo de carga < 3 segundos (crucial para conversiones)
+
+════════════════════════════════════════════════════════════
+SOPORTE / CONTACTO
+════════════════════════════════════════════════════════════
+
+Krea & Cuenta SpA — Edgar Boyé
+kreaycuenta@gmail.com
+RUT: 78.363.475-9
+
+────────────────────────────────────────────────────────────
+Documento de uso interno — Krea & Cuenta SpA | Junio 2026
+════════════════════════════════════════════════════════════
