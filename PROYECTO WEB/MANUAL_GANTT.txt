@@ -36,7 +36,9 @@ dispositivo — todos ven lo mismo.
 3. GUARDAR CAMBIOS EN LA NUBE
 ────────────────────────────────────────────────────────
   → Botón "💾 Guardar" (header, arriba a la derecha)
-  → Ingresar contraseña cuando la pida:
+  → La PRIMERA VEZ pedirá el Token GitHub (ver sección 8)
+    — ingresarlo y quedará guardado en el navegador
+  → Luego pedirá la contraseña:
 
         centrosuizo2026
 
@@ -45,6 +47,10 @@ dispositivo — todos ven lo mismo.
 
   IMPORTANTE: Sin hacer clic en Guardar, los cambios
   se pierden al cerrar o recargar la página.
+
+  NOTA: El token se guarda en el navegador (localStorage).
+  Solo se pide una vez por navegador/dispositivo. Si se
+  borra el caché o se usa otro navegador, lo pedirá de nuevo.
 
 ────────────────────────────────────────────────────────
 4. DESHACER / REHACER
@@ -62,9 +68,6 @@ dispositivo — todos ven lo mismo.
   → En cada tarjeta aparece la sección de comentarios
   → Escribir el comentario y hacer clic en "Agregar"
   → Los comentarios se pueden editar (✏️) o eliminar (🗑)
-  → NOTA: Los comentarios se guardan LOCALMENTE en el
-    navegador, no en la nube. Usar el botón Guardar
-    para persistirlos entre sesiones.
 
 ────────────────────────────────────────────────────────
 6. REINICIAR
@@ -83,6 +86,29 @@ dispositivo — todos ven lo mismo.
   → Orientación recomendada: Horizontal (Landscape)
   → Escala recomendada: 70-80% para que entre en una página
 
+────────────────────────────────────────────────────────
+8. CÓMO OBTENER UN TOKEN GITHUB (si lo pide de nuevo)
+────────────────────────────────────────────────────────
+  Necesitas estar logueado en github.com con la cuenta
+  ETARVIDEOS.
+
+  PASOS:
+  1. Ir a: github.com/settings/tokens/new
+  2. Note (nombre): gantt-centrosuizo
+  3. Expiration: No expiration (o 1 year)
+  4. Scopes: marcar solo ✅ repo (el primero de la lista)
+  5. Clic en "Generate token" (botón verde al final)
+  6. COPIAR el token que aparece (ghp_...)
+     ⚠️ Solo se muestra una vez — copiarlo inmediatamente
+  7. Ir a centrosuizogantt.netlify.app
+  8. Clic en 💾 Guardar → pegar el token cuando lo pida
+  9. Luego ingresar la contraseña: centrosuizo2026
+
+  CUÁNDO necesitarás un token nuevo:
+  - Si borras el caché del navegador
+  - Si usas un navegador o dispositivo diferente
+  - Si el token expira (si elegiste fecha de vencimiento)
+
 ════════════════════════════════════════════════════════
 RESUMEN RÁPIDO
 ════════════════════════════════════════════════════════
@@ -93,6 +119,7 @@ RESUMEN RÁPIDO
   Deshacer error       →  Ctrl+Z (o botón ↩ Deshacer)
   Volver a lo guardado →  Botón ⟳ Reiniciar
   Exportar PDF         →  Botón 🖨️ PDF
+  Token GitHub         →  github.com/settings/tokens/new (ver sección 8)
 
 ════════════════════════════════════════════════════════
 Krea & Cuenta SpA | kreaycuenta@gmail.com | Junio 2026
